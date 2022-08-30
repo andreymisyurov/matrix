@@ -10,6 +10,7 @@ Matrix::Matrix(int set_row, int set_colum) {
   colum = set_colum;
   create();
 }
+
 Matrix::Matrix(Matrix &&other) {
   if (this != &other) {
     std::swap(this->colum, other.colum);
@@ -17,6 +18,7 @@ Matrix::Matrix(Matrix &&other) {
     std::swap(this->matrix, other.matrix);
   }
 }
+
 Matrix::Matrix(const Matrix &other) { *this = other; }
 
 void Matrix::setRow(int new_row) {
