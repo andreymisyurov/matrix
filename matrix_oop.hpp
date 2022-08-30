@@ -7,11 +7,6 @@
 inline constexpr auto EPS = 1e-6;
 
 class Matrix {
- private:
-  int colum = 0;
-  int row = 0;
-  double **matrix = nullptr;
-
  public:
   // getters and setters
   int getColum();
@@ -28,6 +23,7 @@ class Matrix {
   Matrix(int set_row, int set_colum);
   Matrix(Matrix &&other);
   Matrix(const Matrix &other);
+  ~Matrix() { remove(); }
 
  public:
   // calculate funcs
@@ -63,11 +59,12 @@ class Matrix {
   Matrix operator*(const double &x);
   Matrix operator*(double &&x);
   double &operator()(int i, int j);
-  friend bool operator==(const Matrix &this_l, const Matrix &other);
+  bool operator==(const Matrix &other);
 
- public:
-  // destructor
-  ~Matrix() { remove(); }
+ private:
+  int colum = 0;
+  int row = 0;
+  double **matrix = nullptr;
 };
 
 #endif  // SRC_S21_MATRIX_OOP_H_

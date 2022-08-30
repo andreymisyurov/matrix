@@ -167,9 +167,8 @@ Matrix Matrix::transpose() {
   return result;
 }
 
-bool operator==(const Matrix &this_l, const Matrix &other) {
-  return this_l.eq_matrix(other);
-}
+bool Matrix::operator==(const Matrix &other) { return eq_matrix(other); }
+
 Matrix &Matrix::operator=(const Matrix &other) {
   if (this != &other) {
     remove();
