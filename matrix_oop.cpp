@@ -1,39 +1,31 @@
 #include "matrix_oop.hpp"
 
-Matrix::Matrix() : colum(0), row(0) {}
-Matrix::Matrix(int row_colum) : Matrix(row_colum, row_colum) {}
-Matrix::Matrix(int set_row, int set_colum) {
-  if (set_colum < 1 || set_row < 1) {
+Matrix::Matrix(int value) : Matrix(value, value) {}
+Matrix::Matrix(int value_row, int value_colum) {
+  if (value_colum < 1 || value_row < 1) {
     throw std::invalid_argument("Bad value for row or colum.");
   }
-  row = set_row;
-  colum = set_colum;
+
+  m_row = value_row;
+  m_column = value_colum;
   create();
 }
-
-Matrix::Matrix(Matrix &&other) {
-  if (this != &other) {
-    std::swap(this->colum, other.colum);
-    std::swap(this->row, other.row);
-    std::swap(this->matrix, other.matrix);
-  }
-}
-
+Matrix::Matrix(Matrix &&other) { *this = other; }
 Matrix::Matrix(const Matrix &other) { *this = other; }
 
 void Matrix::setRow(int new_row) {
   if (new_row < 1) {
     throw std::invalid_argument("Bad value for row or colum.");
-  } else if (row == 0) {
-    this->row = new_row;
+  } else if (m_row == 0) {
+    this->m_row = new_row;
     create();
-  } else if (new_row < row) {
-    Matrix temp(new_row, colum);
-    copy_matrix(new_row, colum, temp, *this);
+  } else if (new_row < m_row) {
+    Matrix temp(new_row, m_column);
+    copy_matrix(new_row, m_column, temp, *this);
     *this = temp;
-  } else if (new_row > row) {
-    Matrix temp(new_row, colum);
-    copy_matrix(row, colum, temp, *this);
+  } else if (new_row > m_row) {
+    Matrix temp(new_row, m_column);
+    copy_matrix(m_row, m_column, temp, *this);
     *this = temp;
   }
 }
@@ -41,23 +33,21 @@ void Matrix::setRow(int new_row) {
 void Matrix::setColum(int new_colum) {
   if (new_colum < 1) {
     throw std::invalid_argument("Bad value for row or colum.");
-  } else if (colum == 0) {
-    this->colum = new_colum;
+  } else if (m_column == 0) {
+    this->m_column = new_colum;
     create();
-  } else if (new_colum < colum) {
-    Matrix temp(row, new_colum);
-    copy_matrix(row, new_colum, temp, *this);
+  } else if (new_colum < m_column) {
+    Matrix temp(m_row, new_colum);
+    copy_matrix(m_row, new_colum, temp, *this);
     *this = temp;
-  } else if (new_colum > colum) {
-    Matrix temp(row, new_colum);
-    copy_matrix(row, colum, temp, *this);
+  } else if (new_colum > m_column) {
+    Matrix temp(m_row, new_colum);
+    copy_matrix(m_row, m_column, temp, *this);
     *this = temp;
   }
 }
-void Matrix::setDegit(int i, int j, double digit) { matrix[i][j] = digit; }
-int Matrix::getColum() { return colum; }
-int Matrix::getRow() { return row; }
-double Matrix::getDigit(int i, int j) { return matrix[i][j]; }
+int Matrix::getColum() { return m_column; }
+int Matrix::getRow() { return m_row; }
 
 Matrix Matrix::inverse_matrix() {
   double d = determinant();
@@ -70,12 +60,12 @@ Matrix Matrix::inverse_matrix() {
   return result2;
 }
 Matrix Matrix::calc_complements() {
-  if (colum != row) {
+  if (m_column != m_row) {
     throw std::logic_error("Matrix isn't square");
   }
-  Matrix result(row, colum);
-  for (int i = 0; i < result.row; i++) {
-    for (int j = 0; j < result.colum; j++) {
+  Matrix result(m_row, m_column);
+  for (int i = 0; i < result.m_row; i++) {
+    for (int j = 0; j < result.m_column; j++) {
       Matrix temp = this->getMinor(i, j);
       int sign = (i + j) % 2 == 0 ? 1 : -1;
       result.matrix[i][j] = sign * temp.determinant();
@@ -84,17 +74,17 @@ Matrix Matrix::calc_complements() {
   return result;
 }
 double Matrix::determinant() {
-  if (colum != row) {
+  if (m_column != m_row) {
     throw std::logic_error("Matrix isn't square");
   }
   double result = 0.0;
-  if (row == 1) {
+  if (m_row == 1) {
     result = matrix[0][0];
-  } else if (row == 2) {
+  } else if (m_row == 2) {
     result = matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0];
   } else {
     int j = 0;
-    for (int i = 0; i < colum; i++) {
+    for (int i = 0; i < m_column; i++) {
       Matrix temp = this->getMinor(i, j);
       int sign = ((i + j) % 2 == 0) ? (1) : -1;
       double piece = sign * matrix[i][j] * temp.determinant();
@@ -105,8 +95,8 @@ double Matrix::determinant() {
 }
 bool Matrix::eq_matrix(const Matrix &other) const {
   bool result = true;
-  for (int i = 0; i < row; i++) {
-    for (int j = 0; j < colum; j++) {
+  for (int i = 0; i < m_row; i++) {
+    for (int j = 0; j < m_column; j++) {
       double diff = this->matrix[i][j] - other.matrix[i][j];
       if (fabs(diff) > EPS) {
         result = false;
@@ -116,51 +106,51 @@ bool Matrix::eq_matrix(const Matrix &other) const {
   return result;
 }
 void Matrix::sum_matrix(const Matrix &other) {
-  if (row != other.row || colum != other.colum) {
+  if (m_row != other.m_row || m_column != other.m_column) {
     throw std::invalid_argument("Matrix have different rows or columns");
   }
-  for (int i = 0; i < row; i++) {
-    for (int j = 0; j < colum; j++) {
+  for (int i = 0; i < m_row; i++) {
+    for (int j = 0; j < m_column; j++) {
       this->matrix[i][j] += other.matrix[i][j];
     }
   }
 }
 void Matrix::sub_matrix(const Matrix &other) {
-  if (row != other.row || colum != other.colum) {
+  if (m_row != other.m_row || m_column != other.m_column) {
     throw std::invalid_argument("Matrix have different rows or columns");
   }
-  for (int i = 0; i < row; i++) {
-    for (int j = 0; j < colum; j++) {
+  for (int i = 0; i < m_row; i++) {
+    for (int j = 0; j < m_column; j++) {
       this->matrix[i][j] -= other.matrix[i][j];
     }
   }
 }
 void Matrix::mul_number(const double num) {
-  for (int i = 0; i < row; i++) {
-    for (int j = 0; j < colum; j++) {
+  for (int i = 0; i < m_row; i++) {
+    for (int j = 0; j < m_column; j++) {
       matrix[i][j] *= num;
     }
   }
 }
 void Matrix::mul_matrix(const Matrix &other) {
-  if (colum != other.row) {
+  if (m_column != other.m_row) {
     throw std::logic_error("Not equals rows and column");
   }
-  Matrix temp(row, other.colum);
+  Matrix temp(m_row, other.m_column);
   std::swap(*this, temp);
-  for (int i = 0; i < row; i++) {
-    for (int j = 0; j < colum; j++) {
+  for (int i = 0; i < m_row; i++) {
+    for (int j = 0; j < m_column; j++) {
       matrix[i][j] = 0;
-      for (int k = 0; k < temp.colum; k++) {
+      for (int k = 0; k < temp.m_column; k++) {
         matrix[i][j] += temp.matrix[i][k] * other.matrix[k][j];
       }
     }
   }
 }
 Matrix Matrix::transpose() {
-  Matrix result(colum, row);
-  for (int i = 0; i < result.row; i++) {
-    for (int j = 0; j < result.colum; j++) {
+  Matrix result(m_column, m_row);
+  for (int i = 0; i < result.m_row; i++) {
+    for (int j = 0; j < result.m_column; j++) {
       result.matrix[i][j] = matrix[j][i];
     }
   }
@@ -170,24 +160,18 @@ Matrix Matrix::transpose() {
 bool Matrix::operator==(const Matrix &other) { return eq_matrix(other); }
 
 Matrix &Matrix::operator=(const Matrix &other) {
-  if (this != &other) {
-    remove();
-    colum = other.colum;
-    row = other.row;
-    create();
-    for (int i = 0; i < row; i++) {
-      for (int j = 0; j < colum; j++) {
-        matrix[i][j] = other.matrix[i][j];
-      }
-    }
-  }
+  Matrix temp(other.m_row, other.m_column);
+  copy_matrix(other.m_row, other.m_column, temp, other);
+
+  std::swap(m_row, temp.m_row);
+  std::swap(m_column, temp.m_column);
+  std::swap(matrix, temp.matrix);
   return *this;
 }
 Matrix &Matrix::operator=(Matrix &&other) {
   if (this != &other) {
-    remove();
-    std::swap(colum, other.colum);
-    std::swap(row, other.row);
+    std::swap(m_column, other.m_column);
+    std::swap(m_row, other.m_row);
     std::swap(matrix, other.matrix);
   }
   return *this;
@@ -226,52 +210,50 @@ Matrix Matrix::operator-=(const Matrix &other) {
   return *this;
 }
 double &Matrix::operator()(int i, int j) {
-  if (i < 0 || j < 0 || i > row || j > colum) {
+  if (i < 0 || j < 0 || i > m_row || j > m_column) {
     throw std::logic_error("Nothing to get");
   }
   return this->matrix[i][j];
 }
 
 void Matrix::remove() {
-  for (int i = 0; i < row; i++) {
+  for (int i = 0; i < m_row; i++) {
     delete[] matrix[i];
   }
   delete[] matrix;
-  row = 0;
-  colum = 0;
+  m_row = 0;
+  m_column = 0;
   matrix = nullptr;
 }
 void Matrix::create() {
-  if (row > 0 && colum > 0) {
+  if (m_row > 0 && m_column > 0) {
     delete (matrix);
-    matrix = new double *[row];
-    for (int i = 0; i < row; i++) {
-      matrix[i] = new double[colum];
-      std::memset(matrix[i], 0, sizeof(double) * colum);
+    matrix = new double *[m_row];
+    for (int i = 0; i < m_row; i++) {
+      matrix[i] = new double[m_column];
+      std::memset(matrix[i], 0, sizeof(double) * m_column);
     }
   }
 }
 Matrix Matrix::getMinor(int i, int j) {
-  Matrix minor;
-  minor.row = row - 1;
-  minor.colum = colum - 1;
-  minor.create();
+  Matrix minor(m_row - 1, m_column - 1);
   int countI = 0;
   int countJ = 0;
-  for (int l = 0; l < row; l++) {
+  for (int l = 0; l < m_row; l++) {
     if (l == i) {
       continue;
     }
-    for (int k = 0; k < colum; k++) {
+    for (int k = 0; k < m_column; k++) {
       if (k == j) continue;
       minor.matrix[countI][countJ] = matrix[l][k];
-      countJ = (countJ + 1) % minor.colum;
+      countJ = (countJ + 1) % minor.m_column;
     }
-    countI = (countI + 1) % minor.row;
+    countI = (countI + 1) % minor.m_row;
   }
   return minor;
 }
-void copy_matrix(int row, int colum, Matrix const &left, Matrix const &right) {
+void Matrix::copy_matrix(int row, int colum, Matrix const &left,
+                         Matrix const &right) {
   for (int i = 0; i < row; i++) {
     for (int j = 0; j < colum; j++) {
       left.matrix[i][j] = right.matrix[i][j];

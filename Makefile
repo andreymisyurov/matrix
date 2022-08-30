@@ -49,6 +49,5 @@ clean:
 
 push:
 	git add .
-	git reset .DS_Store
 	git commit -m"commit_from_makefile"
 	git push origin main
