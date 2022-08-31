@@ -105,7 +105,7 @@ TEST(equals, true_1) {
   first(0, 0) = 100;
   Matrix second{1};
   second(0, 0) = 100;
-  bool result = first.eq_matrix(second);
+  bool result = first.eqMatrix(second);
   GTEST_ASSERT_EQ(result, 1);
 }
 
@@ -120,7 +120,7 @@ TEST(equals, true_2) {
   second(0, 1) = 2.22;
   second(1, 0) = 3.33;
   second(1, 1) = 4.44;
-  bool result = first.eq_matrix(second);
+  bool result = first.eqMatrix(second);
   GTEST_ASSERT_EQ(result, 1);
 }
 
@@ -145,7 +145,7 @@ TEST(equals, true_3) {
   second(2, 0) = 7;
   second(2, 1) = 8;
   second(2, 2) = 9;
-  bool result = first.eq_matrix(second);
+  bool result = first.eqMatrix(second);
   GTEST_ASSERT_EQ(result, 1);
 }
 
@@ -170,7 +170,7 @@ TEST(equals, true_4) {
   second(2, 0) = -1e-7;
   second(2, 1) = 0.000000000012315;
   second(2, 2) = 0;
-  bool result = first.eq_matrix(second);
+  bool result = first.eqMatrix(second);
   GTEST_ASSERT_EQ(result, 1);
 }
 
@@ -179,7 +179,7 @@ TEST(equals, false_1) {
   first(0, 0) = 100.00001;
   Matrix second(1);
   second(0, 0) = 100;
-  bool result = first.eq_matrix(second);
+  bool result = first.eqMatrix(second);
   GTEST_ASSERT_EQ(result, 0);
 }
 
@@ -194,7 +194,7 @@ TEST(equals, false_2) {
   second(0, 1) = -1e-6;
   second(1, 0) = 3.33;
   second(1, 1) = 4.44;
-  bool result = first.eq_matrix(second);
+  bool result = first.eqMatrix(second);
   GTEST_ASSERT_EQ(result, 0);
 }
 
@@ -209,7 +209,7 @@ TEST(equals, false_3) {
   second(0, 1) = -1;
   second(1, 0) = 3.33;
   second(1, 1) = 4.44;
-  bool result = first.eq_matrix(second);
+  bool result = first.eqMatrix(second);
   GTEST_ASSERT_EQ(result, 0);
 }
 
@@ -226,7 +226,7 @@ TEST(equals, false_4) {
   second(0, 1) = 1;
   second(1, 0) = 3.33;
   second(1, 1) = 4.44;
-  bool result = first.eq_matrix(second);
+  bool result = first.eqMatrix(second);
   GTEST_ASSERT_EQ(result, 0);
 }
 
@@ -316,7 +316,7 @@ TEST(sum, example_1) {
   result(2, 0) = 0;
   result(2, 1) = 0;
   result(2, 2) = 0;
-  first.sum_matrix(second);
+  first.sumMatrix(second);
   for (int i = 0; i < second.getRow(); i++) {
     for (int j = 0; j < second.getColum(); j++) {
       GTEST_ASSERT_EQ(first(i, j), result(i, j));
@@ -340,7 +340,7 @@ TEST(sum, example_2) {
   result(0, 1) = 0;
   result(1, 0) = 0;
   result(1, 1) = 0;
-  first.sum_matrix(second);
+  first.sumMatrix(second);
   for (int i = 0; i < second.getRow(); i++) {
     for (int j = 0; j < second.getColum(); j++) {
       EXPECT_NEAR(first(i, j), result(i, j), EPS);
@@ -379,7 +379,7 @@ TEST(sub, example_1) {
   result(2, 0) = 0;
   result(2, 1) = 0;
   result(2, 2) = 0;
-  first.sub_matrix(second);
+  first.subMatrix(second);
   for (int i = 0; i < second.getRow(); i++) {
     for (int j = 0; j < second.getColum(); j++) {
       GTEST_ASSERT_EQ(first(i, j), result(i, j));
@@ -403,7 +403,7 @@ TEST(sub, example_2) {
   result(0, 1) = 0;
   result(1, 0) = 0;
   result(1, 1) = 0;
-  first.sub_matrix(second);
+  first.subMatrix(second);
   for (int i = 0; i < second.getRow(); i++) {
     for (int j = 0; j < second.getColum(); j++) {
       EXPECT_NEAR(first(i, j), result(i, j), EPS);
@@ -411,7 +411,7 @@ TEST(sub, example_2) {
   }
 }
 
-TEST(mul_number, example_1) {
+TEST(mulNumber, example_1) {
   Matrix first(2);
   first(0, 0) = 1.0000001;
   first(0, 1) = 2;
@@ -422,7 +422,7 @@ TEST(mul_number, example_1) {
   result(0, 1) = 2 * 5;
   result(1, 0) = 3 * 5;
   result(1, 1) = 4 * 5;
-  first.mul_number(5.0);
+  first.mulNumber(5.0);
   for (int i = 0; i < first.getRow(); i++) {
     for (int j = 0; j < first.getColum(); j++) {
       EXPECT_NEAR(first(i, j), result(i, j), EPS);
@@ -430,7 +430,7 @@ TEST(mul_number, example_1) {
   }
 }
 
-TEST(mul_number, example_2) {
+TEST(mulNumber, example_2) {
   Matrix first(2);
   first(0, 0) = 1.0000001;
   first(0, 1) = 2;
@@ -441,7 +441,7 @@ TEST(mul_number, example_2) {
   result(0, 1) = 2 * 0;
   result(1, 0) = 3 * 0;
   result(1, 1) = 4 * 0;
-  first.mul_number(0.000000001);
+  first.mulNumber(0.000000001);
   for (int i = 0; i < first.getRow(); i++) {
     for (int j = 0; j < first.getColum(); j++) {
       EXPECT_NEAR(first(i, j), result(i, j), EPS);
@@ -449,7 +449,7 @@ TEST(mul_number, example_2) {
   }
 }
 
-TEST(mul_number, example_3) {
+TEST(mulNumber, example_3) {
   Matrix first(2);
   first(0, 0) = 1.0000001;
   first(0, 1) = 2;
@@ -460,7 +460,7 @@ TEST(mul_number, example_3) {
   result(0, 1) = 2;
   result(1, 0) = 3;
   result(1, 1) = 4;
-  first.mul_number(1.0);
+  first.mulNumber(1.0);
   for (int i = 0; i < first.getRow(); i++) {
     for (int j = 0; j < first.getColum(); j++) {
       EXPECT_NEAR(first(i, j), result(i, j), EPS);
@@ -468,7 +468,7 @@ TEST(mul_number, example_3) {
   }
 }
 
-TEST(mul_number, example_4) {
+TEST(mulNumber, example_4) {
   Matrix first(2);
   first(0, 0) = 1.0000001;
   first(0, 1) = 2;
@@ -479,7 +479,7 @@ TEST(mul_number, example_4) {
   result(0, 1) = -2;
   result(1, 0) = -3;
   result(1, 1) = -4;
-  first.mul_number(-1.0);
+  first.mulNumber(-1.0);
   for (int i = 0; i < first.getRow(); i++) {
     for (int j = 0; j < first.getColum(); j++) {
       EXPECT_NEAR(first(i, j), result(i, j), EPS);
@@ -487,7 +487,7 @@ TEST(mul_number, example_4) {
   }
 }
 
-TEST(mul_matrix, example_1) {
+TEST(mulMatrix, example_1) {
   Matrix first(3, 2);
   first(0, 0) = 1;
   first(0, 1) = 4;
@@ -512,7 +512,7 @@ TEST(mul_matrix, example_1) {
   result(2, 0) = 15;
   result(2, 1) = 15;
   result(2, 2) = 27;
-  first.mul_matrix(second);
+  first.mulMatrix(second);
   for (int i = 0; i < result.getRow(); i++) {
     for (int j = 0; j < result.getColum(); j++) {
       EXPECT_NEAR(first(i, j), result(i, j), EPS);
@@ -520,7 +520,7 @@ TEST(mul_matrix, example_1) {
   }
 }
 
-TEST(mul_matrix, example_2) {
+TEST(mulMatrix, example_2) {
   Matrix first(2);
   first(0, 0) = 1.5;
   first(0, 1) = 1.5;
@@ -536,7 +536,7 @@ TEST(mul_matrix, example_2) {
   result(0, 1) = 3;
   result(1, 0) = 3;
   result(1, 1) = 3;
-  first.mul_matrix(second);
+  first.mulMatrix(second);
   for (int i = 0; i < first.getRow(); i++) {
     for (int j = 0; j < first.getColum(); j++) {
       EXPECT_NEAR(first(i, j), result(i, j), EPS);
@@ -544,7 +544,7 @@ TEST(mul_matrix, example_2) {
   }
 }
 
-TEST(calc_complements, example_1) {
+TEST(calcComplements, example_1) {
   Matrix first(3);
   first(0, 0) = 1;
   first(0, 1) = 2;
@@ -555,7 +555,7 @@ TEST(calc_complements, example_1) {
   first(2, 0) = 5;
   first(2, 1) = 2;
   first(2, 2) = 1;
-  Matrix second = first.calc_complements();
+  Matrix second = first.calcComplements();
   Matrix result(3);
   result(0, 0) = 0;
   result(0, 1) = 10;
@@ -573,7 +573,7 @@ TEST(calc_complements, example_1) {
   }
 }
 
-TEST(calc_complements, example_2) {
+TEST(calcComplements, example_2) {
   Matrix first(3);
   first(0, 0) = 2;
   first(0, 1) = 5;
@@ -584,7 +584,7 @@ TEST(calc_complements, example_2) {
   first(2, 0) = 5;
   first(2, 1) = -2;
   first(2, 2) = -3;
-  Matrix second = first.calc_complements();
+  Matrix second = first.calcComplements();
   Matrix result(3);
   result(0, 0) = -1;
   result(0, 1) = 38;
@@ -602,7 +602,7 @@ TEST(calc_complements, example_2) {
   }
 }
 
-TEST(inverse_matrix, example_1) {
+TEST(inverseMatrix, example_1) {
   Matrix first(2);
   first(0, 0) = -1.5;
   first(0, 1) = -1.5;
@@ -613,7 +613,7 @@ TEST(inverse_matrix, example_1) {
   result(0, 1) = 1;
   result(1, 0) = 1. / 3;
   result(1, 1) = -1;
-  Matrix second = first.inverse_matrix();
+  Matrix second = first.inverseMatrix();
   for (int i = 0; i < first.getRow(); i++) {
     for (int j = 0; j < first.getColum(); j++) {
       EXPECT_NEAR(second(i, j), result(i, j), EPS);
@@ -621,7 +621,7 @@ TEST(inverse_matrix, example_1) {
   }
 }
 
-TEST(inverse_matrix, example_2) {
+TEST(inverseMatrix, example_2) {
   Matrix first(3);
   first(0, 0) = 2;
   first(0, 1) = 5;
@@ -632,7 +632,7 @@ TEST(inverse_matrix, example_2) {
   first(2, 0) = 5;
   first(2, 1) = -2;
   first(2, 2) = -3;
-  Matrix second = first.inverse_matrix();
+  Matrix second = first.inverseMatrix();
   Matrix result(3);
   result(0, 0) = 1;
   result(0, 1) = -1;
@@ -1196,7 +1196,7 @@ TEST(catch_exaption_double_constr, example_3) {
   EXPECT_THROW(Matrix(0, 0), std::invalid_argument);
 }
 
-TEST(catch_exaption_sum_matrix, example_4) {
+TEST(catch_exaption_sumMatrix, example_4) {
   Matrix second(2, 2);
   second(0, 0) = 1;
   second(0, 1) = 2;
@@ -1209,10 +1209,10 @@ TEST(catch_exaption_sum_matrix, example_4) {
   result(1, 0) = 3;
   result(1, 1) = 4;
   result(1, 2) = 0;
-  EXPECT_THROW(second.sum_matrix(result), std::invalid_argument);
+  EXPECT_THROW(second.sumMatrix(result), std::invalid_argument);
 }
 
-TEST(catch_exaption_sub_matrix, example_5) {
+TEST(catch_exaption_subMatrix, example_5) {
   Matrix second(2, 2);
   second(0, 0) = 1;
   second(0, 1) = 2;
@@ -1225,10 +1225,10 @@ TEST(catch_exaption_sub_matrix, example_5) {
   result(1, 0) = 3;
   result(1, 1) = 4;
   result(1, 2) = 0;
-  EXPECT_THROW(second.sub_matrix(result), std::invalid_argument);
+  EXPECT_THROW(second.subMatrix(result), std::invalid_argument);
 }
 
-TEST(catch_exaption_mul_matrix, example_6) {
+TEST(catch_exaption_mulMatrix, example_6) {
   Matrix second(2, 2);
   second(0, 0) = 1;
   second(0, 1) = 2;
@@ -1241,7 +1241,7 @@ TEST(catch_exaption_mul_matrix, example_6) {
   result(1, 0) = 3;
   result(1, 1) = 4;
   result(1, 2) = 0;
-  EXPECT_THROW(result.mul_matrix(second), std::logic_error);
+  EXPECT_THROW(result.mulMatrix(second), std::logic_error);
 }
 
 TEST(catch_exaption_determinant, example_7) {
@@ -1255,7 +1255,7 @@ TEST(catch_exaption_determinant, example_7) {
   EXPECT_THROW(result.determinant(), std::logic_error);
 }
 
-TEST(catch_exaption_calc_complements, example_8) {
+TEST(catch_exaption_calcComplements, example_8) {
   Matrix result(2, 3);
   result(0, 0) = 1;
   result(0, 1) = 2;
@@ -1263,7 +1263,7 @@ TEST(catch_exaption_calc_complements, example_8) {
   result(1, 0) = 3;
   result(1, 1) = 4;
   result(1, 2) = 0;
-  EXPECT_THROW(result.calc_complements(), std::logic_error);
+  EXPECT_THROW(result.calcComplements(), std::logic_error);
 }
 
 TEST(catch_exaption_inverse, example_9) {
@@ -1277,7 +1277,7 @@ TEST(catch_exaption_inverse, example_9) {
   result(2, 0) = 7;
   result(2, 1) = 8;
   result(2, 2) = 9;
-  EXPECT_THROW(result.inverse_matrix(), std::logic_error);
+  EXPECT_THROW(result.inverseMatrix(), std::logic_error);
 }
 
 TEST(catch_exaption_bracket_operator, example_10) {

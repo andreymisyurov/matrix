@@ -11,10 +11,10 @@ inline constexpr auto EPS = 1e-6;
 
 class Matrix {
  public:
-  int getColum() { return m_column; };
-  int getRow() { return m_row; };
-  void setRow(int x);
-  void setColum(int x);
+  auto getColum()       -> int { return m_column; };
+  auto getRow()         -> int { return m_row; };
+  auto setRow(int x)    -> void;
+  auto setColum(int x)  -> void;
 
  public:
   Matrix() = delete;
@@ -25,49 +25,50 @@ class Matrix {
   ~Matrix() { remove(); }
 
  public:
-  bool eq_matrix(const Matrix &other) const;
-  void sum_matrix(const Matrix &other);
-  void sub_matrix(const Matrix &other);
-  void mul_number(const double num);
-  void mul_matrix(const Matrix &other);
-  Matrix transpose();
-  double determinant();
-  Matrix calc_complements();
-  Matrix inverse_matrix();
+  auto eqMatrix(const Matrix &other) const  -> bool;
+  auto sumMatrix(const Matrix &other)       -> void;
+  auto subMatrix(const Matrix &other)       -> void;
+  auto mulNumber(const double num)          -> void;
+  auto mulMatrix(const Matrix &other)       -> void;
+  auto determinant()                        -> double;
+  auto transpose()                          -> Matrix;
+  auto calcComplements()                    -> Matrix;
+  auto inverseMatrix()                      -> Matrix;
 
  public:
-  Matrix &operator=(const Matrix &other);
-  Matrix &operator=(Matrix &&other);
-  Matrix operator+=(const Matrix &other);
-  Matrix operator-=(const Matrix &other);
-  Matrix operator*=(double &&value);
-  Matrix operator*=(double &value);
-  Matrix operator+(const Matrix &other);
-  Matrix operator-(const Matrix &other);
-  Matrix operator*(const Matrix &other);
-  Matrix operator*(double &value);
-  Matrix operator*(double &&value);
-  Matrix friend operator*(double &&value, const Matrix &other);
-  friend Matrix operator*(double &value, const Matrix &other);
-  double &operator()(int i, int j);
-  bool operator==(const Matrix &other) const;
+  auto operator=(const Matrix &other)       -> Matrix &;
+  auto operator=(Matrix &&other)            -> Matrix &;
+  auto operator+=(const Matrix &other)      -> Matrix;
+  auto operator-=(const Matrix &other)      -> Matrix;
+  auto operator*=(double &&value)           -> Matrix;
+  auto operator*=(double &value)            -> Matrix;
+  auto operator+(const Matrix &other)       -> Matrix;
+  auto operator-(const Matrix &other)       -> Matrix;
+  auto operator*(const Matrix &other)       -> Matrix;
+  auto operator*(double &value)             -> Matrix;
+  auto operator*(double &&value)            -> Matrix;
+  auto operator()(int i, int j)             -> double &;
+  auto operator==(const Matrix &other) const                    -> bool;
+  auto friend operator*(double &&value, const Matrix &other)    -> Matrix;
+  auto friend operator*(double &value, const Matrix &other)     -> Matrix;
+
 
  private:
-  void checkData(const Matrix &other);
-  void checkForMult(const Matrix &other);
-  void checkSquare();
-  void checkSetter(int value);
-  void checkConstructor(int value_row, int value_column);
-  void create();
-  void remove();
-  Matrix getMinor(int i, int j);
-  static void copy_matrix(int row, int m_column, const Matrix &left,
-                          const Matrix &right);
+  auto checkData(const Matrix &other)                       -> void;
+  auto checkForMult(const Matrix &other)                    -> void;
+  auto checkSquare()                                        -> void;
+  auto checkSetter(int value)                               -> void;
+  auto checkConstructor(int value_row, int value_column)    -> void;
+  auto create()                                             -> void;
+  auto remove()                                             -> void;
+  auto getMinor(int i, int j)                               -> Matrix;
+  auto static copyMatrix(int row, int m_column,
+            const Matrix &left, const Matrix &right)        -> void;
 
  private:
   int m_column = 0;
   int m_row = 0;
-  double **matrix = nullptr;
+  double **m_matrix = nullptr;
 };
 
 }  // namespace victoriv
