@@ -35,6 +35,9 @@ test: test_build
 test_build:
 	$(CC) test.cpp matrix_oop.cpp -o testing.out $(CHECK_FLAGS)
 
+debug:
+	$(CC) test.cpp matrix_oop.cpp -g -o testing.out $(CHECK_FLAGS)
+
 gcov:
 	$(CC) test.cpp matrix_oop.cpp -fprofile-arcs -ftest-coverage $(CHECK_FLAGS)
 	./a.out
@@ -49,5 +52,5 @@ clean:
 
 push:
 	git add .
-	git commit -m"commit_from_makefile"
+	git commit -m"clean"
 	git push origin main

@@ -6,96 +6,98 @@
 
 #include "matrix_oop.hpp"
 
+using namespace victoriv;
+
 TEST(copy_constr, example_1) {
-  Matrix testa{2};
-  testa(0, 0) = 1;
-  testa(0, 1) = 2;
-  testa(1, 0) = 3;
-  testa(1, 1) = 4;
-  Matrix copy = testa;
-  for (int i = 0; i < testa.getRow(); i++) {
-    for (int j = 0; j < testa.getColum(); j++) {
-      GTEST_ASSERT_EQ(copy(i, j), testa(i, j));
+  Matrix ex(2);
+  ex(0, 0) = 1;
+  ex(0, 1) = 2;
+  ex(1, 0) = 3;
+  ex(1, 1) = 4;
+  Matrix copy = ex;
+  for (int i = 0; i < ex.getRow(); i++) {
+    for (int j = 0; j < ex.getColum(); j++) {
+      GTEST_ASSERT_EQ(copy(i, j), ex(i, j));
     }
   }
 }
 
 TEST(determinant, normal_1_1) {
-  Matrix testa{1};
-  testa(0, 0) = 100;
-  GTEST_ASSERT_EQ(testa.determinant(), 100.0);
+  Matrix ex{1};
+  ex(0, 0) = 100;
+  GTEST_ASSERT_EQ(ex.determinant(), 100.0);
 }
 
 TEST(determinant, normal_2_2) {
-  Matrix testa{2};
-  testa(0, 0) = 1;
-  testa(0, 1) = 2;
-  testa(1, 0) = 3;
-  testa(1, 1) = 4;
-  GTEST_ASSERT_EQ(testa.determinant(), -2.0);
+  Matrix ex{2};
+  ex(0, 0) = 1;
+  ex(0, 1) = 2;
+  ex(1, 0) = 3;
+  ex(1, 1) = 4;
+  GTEST_ASSERT_EQ(ex.determinant(), -2.0);
 }
 
 TEST(determinant, normal1_3_3) {
-  Matrix testa{3};
-  testa(0, 0) = 1;
-  testa(0, 1) = 2;
-  testa(0, 2) = 3;
-  testa(1, 0) = 4;
-  testa(1, 1) = 5;
-  testa(1, 2) = 6;
-  testa(2, 0) = 7;
-  testa(2, 1) = 8;
-  testa(2, 2) = 9;
-  GTEST_ASSERT_EQ(testa.determinant(), 0.0);
+  Matrix ex{3};
+  ex(0, 0) = 1;
+  ex(0, 1) = 2;
+  ex(0, 2) = 3;
+  ex(1, 0) = 4;
+  ex(1, 1) = 5;
+  ex(1, 2) = 6;
+  ex(2, 0) = 7;
+  ex(2, 1) = 8;
+  ex(2, 2) = 9;
+  GTEST_ASSERT_EQ(ex.determinant(), 0.0);
 }
 
 TEST(determinant, normal_double_3_3) {
-  Matrix testa{3};
-  testa(0, 0) = 1.1;
-  testa(0, 1) = 2.2;
-  testa(0, 2) = 3;
-  testa(1, 0) = 4.4;
-  testa(1, 1) = 5;
-  testa(1, 2) = 6.6;
-  testa(2, 0) = 7;
-  testa(2, 1) = 8.8;
-  testa(2, 2) = 9;
-  EXPECT_NEAR(testa.determinant(), 11.292, 0.7);
+  Matrix ex{3};
+  ex(0, 0) = 1.1;
+  ex(0, 1) = 2.2;
+  ex(0, 2) = 3;
+  ex(1, 0) = 4.4;
+  ex(1, 1) = 5;
+  ex(1, 2) = 6.6;
+  ex(2, 0) = 7;
+  ex(2, 1) = 8.8;
+  ex(2, 2) = 9;
+  EXPECT_NEAR(ex.determinant(), 11.292, 0.7);
 }
 
 TEST(determinant, normal2_3_3) {
-  Matrix testa{3};
-  testa(0, 0) = 1;
-  testa(0, 1) = 2;
-  testa(0, 2) = 3;
-  testa(1, 0) = 4;
-  testa(1, 1) = 5;
-  testa(1, 2) = 6;
-  testa(2, 0) = 7;
-  testa(2, 1) = 8;
-  testa(2, 2) = 9;
-  GTEST_ASSERT_EQ(testa.determinant(), 0.0);
+  Matrix ex{3};
+  ex(0, 0) = 1;
+  ex(0, 1) = 2;
+  ex(0, 2) = 3;
+  ex(1, 0) = 4;
+  ex(1, 1) = 5;
+  ex(1, 2) = 6;
+  ex(2, 0) = 7;
+  ex(2, 1) = 8;
+  ex(2, 2) = 9;
+  GTEST_ASSERT_EQ(ex.determinant(), 0.0);
 }
 
 TEST(determinant, normal_4_4) {
-  Matrix testa{4};
-  testa(0, 0) = 4;
-  testa(0, 1) = 5;
-  testa(0, 2) = -1;
-  testa(0, 3) = 8;
-  testa(1, 0) = 1;
-  testa(1, 1) = -5;
-  testa(1, 2) = 9;
-  testa(1, 3) = 3;
-  testa(2, 0) = -5;
-  testa(2, 1) = 1;
-  testa(2, 2) = 9;
-  testa(2, 3) = 2;
-  testa(3, 0) = 7;
-  testa(3, 1) = 8;
-  testa(3, 2) = 2;
-  testa(3, 3) = 1;
-  GTEST_ASSERT_EQ(testa.determinant(), 6930.0);
+  Matrix ex{4};
+  ex(0, 0) = 4;
+  ex(0, 1) = 5;
+  ex(0, 2) = -1;
+  ex(0, 3) = 8;
+  ex(1, 0) = 1;
+  ex(1, 1) = -5;
+  ex(1, 2) = 9;
+  ex(1, 3) = 3;
+  ex(2, 0) = -5;
+  ex(2, 1) = 1;
+  ex(2, 2) = 9;
+  ex(2, 3) = 2;
+  ex(3, 0) = 7;
+  ex(3, 1) = 8;
+  ex(3, 2) = 2;
+  ex(3, 3) = 1;
+  GTEST_ASSERT_EQ(ex.determinant(), 6930.0);
 }
 
 TEST(equals, true_1) {
@@ -894,6 +896,65 @@ TEST(operator_mult_number, example_3) {
   result(1, 1) = 0;
   double n = 0.0;
   first = first * n;
+  for (int i = 0; i < result.getRow(); i++) {
+    for (int j = 0; j < result.getColum(); j++) {
+      GTEST_ASSERT_EQ(first(i, j), result(i, j));
+    }
+  }
+}
+
+TEST(operator_mult_number, example_4) {
+  Matrix first(2);
+  first(0, 0) = 1;
+  first(0, 1) = 2;
+  first(1, 0) = 3;
+  first(1, 1) = 4;
+  Matrix result(2);
+  result(0, 0) = 0;
+  result(0, 1) = 0;
+  result(1, 0) = 0;
+  result(1, 1) = 0;
+  double n = 0.0;
+  first *= n;
+  for (int i = 0; i < result.getRow(); i++) {
+    for (int j = 0; j < result.getColum(); j++) {
+      GTEST_ASSERT_EQ(first(i, j), result(i, j));
+    }
+  }
+}
+
+TEST(operator_mult_number, friend_1) {
+  Matrix first(2);
+  first(0, 0) = 1;
+  first(0, 1) = 2;
+  first(1, 0) = 3;
+  first(1, 1) = 4;
+  Matrix result(2);
+  result(0, 0) = 0;
+  result(0, 1) = 0;
+  result(1, 0) = 0;
+  result(1, 1) = 0;
+  double n = 0.0;
+  first = n * first;
+  for (int i = 0; i < result.getRow(); i++) {
+    for (int j = 0; j < result.getColum(); j++) {
+      GTEST_ASSERT_EQ(first(i, j), result(i, j));
+    }
+  }
+}
+
+TEST(operator_mult_number, friend_2) {
+  Matrix first(2);
+  first(0, 0) = 1;
+  first(0, 1) = 2;
+  first(1, 0) = 3;
+  first(1, 1) = 4;
+  Matrix result(2);
+  result(0, 0) = 0;
+  result(0, 1) = 0;
+  result(1, 0) = 0;
+  result(1, 1) = 0;
+  first = 0.0 * first;
   for (int i = 0; i < result.getRow(); i++) {
     for (int j = 0; j < result.getColum(); j++) {
       GTEST_ASSERT_EQ(first(i, j), result(i, j));
