@@ -70,7 +70,6 @@ class Matrix {
   int m_row = 0;
   double **m_matrix = nullptr;
 };
-
 }  // namespace victoriv
 
 #endif  // SRC_S21_MATRIX_OOP_H_
