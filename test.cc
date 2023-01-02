@@ -4,41 +4,42 @@
 #include <iostream>
 #include <stdexcept>
 
-#include "matrix_oop.hpp"
+#include "matrix_oop.h"
 
-using namespace victoriv;
+//using namespace victoriv;
+
 
 TEST(copy_constr, example_1) {
-  Matrix ex(2);
+  Matrix<double> ex(2);
   ex(0, 0) = 1;
   ex(0, 1) = 2;
   ex(1, 0) = 3;
   ex(1, 1) = 4;
   Matrix copy = ex;
-  for (int i = 0; i < ex.getRow(); i++) {
-    for (int j = 0; j < ex.getColum(); j++) {
+  for (int i = 0; i < ex.getRow(); ++i) {
+    for (int j = 0; j < ex.getColum(); ++j) {
       GTEST_ASSERT_EQ(copy(i, j), ex(i, j));
     }
   }
 }
 
 TEST(determinant, normal_1_1) {
-  Matrix ex{1};
+  Matrix<short> ex{1};
   ex(0, 0) = 100;
-  GTEST_ASSERT_EQ(ex.determinant(), 100.0);
+  GTEST_ASSERT_EQ(ex.determinant(), 100.);
 }
 
 TEST(determinant, normal_2_2) {
-  Matrix ex{2};
-  ex(0, 0) = 1;
-  ex(0, 1) = 2;
-  ex(1, 0) = 3;
-  ex(1, 1) = 4;
+  Matrix<float> ex{2};
+  ex(0, 0) = 1.;
+  ex(0, 1) = 2.;
+  ex(1, 0) = 3.;
+  ex(1, 1) = 4.;
   GTEST_ASSERT_EQ(ex.determinant(), -2.0);
 }
 
 TEST(determinant, normal1_3_3) {
-  Matrix ex{3};
+  Matrix<int> ex{3};
   ex(0, 0) = 1;
   ex(0, 1) = 2;
   ex(0, 2) = 3;
@@ -52,7 +53,7 @@ TEST(determinant, normal1_3_3) {
 }
 
 TEST(determinant, normal_double_3_3) {
-  Matrix ex{3};
+  Matrix<float> ex{3};
   ex(0, 0) = 1.1;
   ex(0, 1) = 2.2;
   ex(0, 2) = 3;
@@ -66,7 +67,7 @@ TEST(determinant, normal_double_3_3) {
 }
 
 TEST(determinant, normal2_3_3) {
-  Matrix ex{3};
+  Matrix<char> ex{3};
   ex(0, 0) = 1;
   ex(0, 1) = 2;
   ex(0, 2) = 3;
@@ -80,7 +81,7 @@ TEST(determinant, normal2_3_3) {
 }
 
 TEST(determinant, normal_4_4) {
-  Matrix ex{4};
+  Matrix<short> ex{4};
   ex(0, 0) = 4;
   ex(0, 1) = 5;
   ex(0, 2) = -1;
@@ -101,21 +102,21 @@ TEST(determinant, normal_4_4) {
 }
 
 TEST(equals, true_1) {
-  Matrix first{1};
+  Matrix<int> first{1};
   first(0, 0) = 100;
-  Matrix second{1};
+  Matrix<int> second{1};
   second(0, 0) = 100;
   bool result = first.eqMatrix(second);
   GTEST_ASSERT_EQ(result, 1);
 }
 
 TEST(equals, true_2) {
-  Matrix first{2};
+  Matrix<float> first{2};
   first(0, 0) = 1.11;
   first(0, 1) = 2.22;
   first(1, 0) = 3.33;
   first(1, 1) = 4.44;
-  Matrix second{2};
+  Matrix<float> second{2};
   second(0, 0) = 1.11;
   second(0, 1) = 2.22;
   second(1, 0) = 3.33;
@@ -125,7 +126,7 @@ TEST(equals, true_2) {
 }
 
 TEST(equals, true_3) {
-  Matrix first(3);
+  Matrix<char> first(3);
   first(0, 0) = 1;
   first(0, 1) = 2;
   first(0, 2) = 3;
@@ -135,7 +136,7 @@ TEST(equals, true_3) {
   first(2, 0) = 7;
   first(2, 1) = 8;
   first(2, 2) = 9;
-  Matrix second(3);
+  Matrix<char> second(3);
   second(0, 0) = 1;
   second(0, 1) = 2;
   second(0, 2) = 3;
@@ -150,7 +151,7 @@ TEST(equals, true_3) {
 }
 
 TEST(equals, true_4) {
-  Matrix first(3);
+  Matrix<double> first(3);
   first(0, 0) = 0.0000009;
   first(0, 1) = 0;
   first(0, 2) = 0;
@@ -160,7 +161,7 @@ TEST(equals, true_4) {
   first(2, 0) = 0;
   first(2, 1) = 0;
   first(2, 2) = 0;
-  Matrix second(3);
+  Matrix<double> second(3);
   second(0, 0) = 0;
   second(0, 1) = 0;
   second(0, 2) = 0;
@@ -175,21 +176,21 @@ TEST(equals, true_4) {
 }
 
 TEST(equals, false_1) {
-  Matrix first(1);
+  Matrix<float> first(1);
   first(0, 0) = 100.00001;
-  Matrix second(1);
-  second(0, 0) = 100;
+  Matrix<float> second(1);
+  second(0, 0) = 100.;
   bool result = first.eqMatrix(second);
   GTEST_ASSERT_EQ(result, 0);
 }
 
 TEST(equals, false_2) {
-  Matrix first(2);
+  Matrix<double> first(2);
   first(0, 0) = 1.11;
   first(0, 1) = 1e-6;
   first(1, 0) = 3.33;
   first(1, 1) = 4.44;
-  Matrix second(2);
+  Matrix<double> second(2);
   second(0, 0) = 1.11;
   second(0, 1) = -1e-6;
   second(1, 0) = 3.33;
@@ -199,12 +200,12 @@ TEST(equals, false_2) {
 }
 
 TEST(equals, false_3) {
-  Matrix first(2);
+  Matrix<float> first(2);
   first(0, 0) = 1.11;
   first(0, 1) = 1;
   first(1, 0) = 3.33;
   first(1, 1) = 4.44;
-  Matrix second(2);
+  Matrix<float> second(2);
   second(0, 0) = 1.11;
   second(0, 1) = -1;
   second(1, 0) = 3.33;
@@ -214,14 +215,14 @@ TEST(equals, false_3) {
 }
 
 TEST(equals, false_4) {
-  Matrix first(2, 3);
+  Matrix<float> first(2, 3);
   first(0, 0) = 1.11;
   first(0, 1) = 1;
   first(0, 2) = 1.5;
   first(1, 0) = 3.33;
   first(1, 1) = 4.44;
   first(1, 2) = 5;
-  Matrix second(2);
+  Matrix<float> second(2);
   second(0, 0) = 1.11;
   second(0, 1) = 1;
   second(1, 0) = 3.33;
@@ -231,14 +232,14 @@ TEST(equals, false_4) {
 }
 
 TEST(transpose, example_1) {
-  Matrix first(2, 3);
+  Matrix<int> first(2, 3);
   first(0, 0) = 1;
   first(0, 1) = 2;
   first(0, 2) = 3;
   first(1, 0) = 4;
   first(1, 1) = 5;
   first(1, 2) = 6;
-  Matrix second(3, 2);
+  Matrix<int> second(3, 2);
   second(0, 0) = 1;
   second(0, 1) = 4;
   second(1, 0) = 2;
@@ -254,17 +255,17 @@ TEST(transpose, example_1) {
 }
 
 TEST(transpose, example_2) {
-  Matrix first(2);
+  Matrix<short> first(2);
   first(0, 0) = 1;
   first(0, 1) = 2;
   first(1, 0) = 3;
   first(1, 1) = 4;
-  Matrix second(2);
+  Matrix<short> second(2);
   second(0, 0) = 1;
   second(0, 1) = 3;
   second(1, 0) = 2;
   second(1, 1) = 4;
-  Matrix ex = first.transpose();
+  Matrix<short> ex = first.transpose();
   for (int i = 0; i < second.getRow(); i++) {
     for (int j = 0; j < second.getColum(); j++) {
       GTEST_ASSERT_EQ(ex(i, j), second(i, j));
@@ -273,11 +274,11 @@ TEST(transpose, example_2) {
 }
 
 TEST(transpose, example_3) {
-  Matrix first(1);
+  Matrix<char> first(1);
   first(0, 0) = 1;
-  Matrix second(1);
+  Matrix<char> second(1);
   second(0, 0) = 1;
-  Matrix ex = first.transpose();
+  Matrix<char> ex = first.transpose();
   for (int i = 0; i < second.getRow(); i++) {
     for (int j = 0; j < second.getColum(); j++) {
       GTEST_ASSERT_EQ(ex(i, j), second(i, j));
@@ -286,7 +287,7 @@ TEST(transpose, example_3) {
 }
 
 TEST(sum, example_1) {
-  Matrix first(3);
+  Matrix<int> first(3);
   first(0, 0) = 1;
   first(0, 1) = 2;
   first(0, 2) = 3;
@@ -296,7 +297,7 @@ TEST(sum, example_1) {
   first(2, 0) = 7;
   first(2, 1) = 8;
   first(2, 2) = 9;
-  Matrix second(3);
+  Matrix<int> second(3);
   second(0, 0) = -1;
   second(0, 1) = -2;
   second(0, 2) = -3;
@@ -306,7 +307,7 @@ TEST(sum, example_1) {
   second(2, 0) = -7;
   second(2, 1) = -8;
   second(2, 2) = -9;
-  Matrix result(3);
+  Matrix<int> result(3);
   result(0, 0) = 0;
   result(0, 1) = 0;
   result(0, 2) = 0;
@@ -325,17 +326,17 @@ TEST(sum, example_1) {
 }
 
 TEST(sum, example_2) {
-  Matrix first(2);
+  Matrix<float> first(2);
   first(0, 0) = 1.0000001;
   first(0, 1) = 2;
   first(1, 0) = 3;
   first(1, 1) = 4;
-  Matrix second(2);
+  Matrix<float> second(2);
   second(0, 0) = -1;
   second(0, 1) = -2;
   second(1, 0) = -3;
   second(1, 1) = -4.0000001;
-  Matrix result(2);
+  Matrix<float> result(2);
   result(0, 0) = 0;
   result(0, 1) = 0;
   result(1, 0) = 0;
@@ -349,7 +350,7 @@ TEST(sum, example_2) {
 }
 
 TEST(sub, example_1) {
-  Matrix first(3);
+  Matrix<short> first(3);
   first(0, 0) = 1;
   first(0, 1) = 2;
   first(0, 2) = 3;
@@ -359,7 +360,7 @@ TEST(sub, example_1) {
   first(2, 0) = 7;
   first(2, 1) = 8;
   first(2, 2) = 9;
-  Matrix second(3);
+  Matrix<short> second(3);
   second(0, 0) = 1;
   second(0, 1) = 2;
   second(0, 2) = 3;
@@ -369,7 +370,7 @@ TEST(sub, example_1) {
   second(2, 0) = 7;
   second(2, 1) = 8;
   second(2, 2) = 9;
-  Matrix result(3);
+  Matrix<short> result(3);
   result(0, 0) = 0;
   result(0, 1) = 0;
   result(0, 2) = 0;
@@ -388,21 +389,21 @@ TEST(sub, example_1) {
 }
 
 TEST(sub, example_2) {
-  Matrix first(2);
+  Matrix<float> first(2);
   first(0, 0) = 1.0000001;
-  first(0, 1) = 2;
-  first(1, 0) = 3;
-  first(1, 1) = 4;
-  Matrix second(2);
-  second(0, 0) = 1;
-  second(0, 1) = 2;
-  second(1, 0) = 3;
+  first(0, 1) = 2.;
+  first(1, 0) = 3.;
+  first(1, 1) = 4.;
+  Matrix<float> second(2);
+  second(0, 0) = 1.;
+  second(0, 1) = 2.;
+  second(1, 0) = 3.;
   second(1, 1) = 4.0000001;
-  Matrix result(2);
-  result(0, 0) = 0;
-  result(0, 1) = 0;
-  result(1, 0) = 0;
-  result(1, 1) = 0;
+  Matrix<float> result(2);
+  result(0, 0) = 0.;
+  result(0, 1) = 0.;
+  result(1, 0) = 0.;
+  result(1, 1) = 0.;
   first.subMatrix(second);
   for (int i = 0; i < second.getRow(); i++) {
     for (int j = 0; j < second.getColum(); j++) {
@@ -412,16 +413,16 @@ TEST(sub, example_2) {
 }
 
 TEST(mulNumber, example_1) {
-  Matrix first(2);
+  Matrix<double> first(2);
   first(0, 0) = 1.0000001;
-  first(0, 1) = 2;
-  first(1, 0) = 3;
-  first(1, 1) = 4;
-  Matrix result(2);
+  first(0, 1) = 2.;
+  first(1, 0) = 3.;
+  first(1, 1) = 4.;
+  Matrix<double> result(2);
   result(0, 0) = 1.0000001 * 5;
-  result(0, 1) = 2 * 5;
-  result(1, 0) = 3 * 5;
-  result(1, 1) = 4 * 5;
+  result(0, 1) = 2. * 5.;
+  result(1, 0) = 3. * 5.;
+  result(1, 1) = 4. * 5.;
   first.mulNumber(5.0);
   for (int i = 0; i < first.getRow(); i++) {
     for (int j = 0; j < first.getColum(); j++) {
@@ -431,35 +432,35 @@ TEST(mulNumber, example_1) {
 }
 
 TEST(mulNumber, example_2) {
-  Matrix first(2);
+  Matrix<float> first(2);
   first(0, 0) = 1.0000001;
-  first(0, 1) = 2;
-  first(1, 0) = 3;
-  first(1, 1) = 4;
-  Matrix result(2);
-  result(0, 0) = 1.0000001 * 0;
-  result(0, 1) = 2 * 0;
-  result(1, 0) = 3 * 0;
-  result(1, 1) = 4 * 0;
+  first(0, 1) = 2.;
+  first(1, 0) = 3.;
+  first(1, 1) = 4.;
+  Matrix<float> result(2);
+  result(0, 0) = 1.0000001 * 0.;
+  result(0, 1) = 2 * 0.;
+  result(1, 0) = 3 * 0.;
+  result(1, 1) = 4 * 0.;
   first.mulNumber(0.000000001);
-  for (int i = 0; i < first.getRow(); i++) {
-    for (int j = 0; j < first.getColum(); j++) {
+  for (int i = 0; i < first.getRow(); ++i) {
+    for (int j = 0; j < first.getColum(); ++j) {
       EXPECT_NEAR(first(i, j), result(i, j), EPS);
     }
   }
 }
 
 TEST(mulNumber, example_3) {
-  Matrix first(2);
+  Matrix<float> first(2);
   first(0, 0) = 1.0000001;
-  first(0, 1) = 2;
-  first(1, 0) = 3;
-  first(1, 1) = 4;
-  Matrix result(2);
+  first(0, 1) = 2.;
+  first(1, 0) = 3.;
+  first(1, 1) = 4.;
+  Matrix<float> result(2);
   result(0, 0) = 1.0000001;
-  result(0, 1) = 2;
-  result(1, 0) = 3;
-  result(1, 1) = 4;
+  result(0, 1) = 2.;
+  result(1, 0) = 3.;
+  result(1, 1) = 4.;
   first.mulNumber(1.0);
   for (int i = 0; i < first.getRow(); i++) {
     for (int j = 0; j < first.getColum(); j++) {
@@ -469,16 +470,16 @@ TEST(mulNumber, example_3) {
 }
 
 TEST(mulNumber, example_4) {
-  Matrix first(2);
+  Matrix<double> first(2);
   first(0, 0) = 1.0000001;
-  first(0, 1) = 2;
-  first(1, 0) = 3;
-  first(1, 1) = 4;
-  Matrix result(2);
+  first(0, 1) = 2.;
+  first(1, 0) = 3.;
+  first(1, 1) = 4.;
+  Matrix<double> result(2);
   result(0, 0) = -1.0000001;
-  result(0, 1) = -2;
-  result(1, 0) = -3;
-  result(1, 1) = -4;
+  result(0, 1) = -2.;
+  result(1, 0) = -3.;
+  result(1, 1) = -4.;
   first.mulNumber(-1.0);
   for (int i = 0; i < first.getRow(); i++) {
     for (int j = 0; j < first.getColum(); j++) {
@@ -488,21 +489,21 @@ TEST(mulNumber, example_4) {
 }
 
 TEST(mulMatrix, example_1) {
-  Matrix first(3, 2);
+  Matrix<int> first(3, 2);
   first(0, 0) = 1;
   first(0, 1) = 4;
   first(1, 0) = 2;
   first(1, 1) = 5;
   first(2, 0) = 3;
   first(2, 1) = 6;
-  Matrix second(2, 3);
+  Matrix<int> second(2, 3);
   second(0, 0) = 1;
   second(0, 1) = -1;
   second(0, 2) = 1;
   second(1, 0) = 2;
   second(1, 1) = 3;
   second(1, 2) = 4;
-  Matrix result(3);
+  Matrix<int> result(3);
   result(0, 0) = 9;
   result(0, 1) = 11;
   result(0, 2) = 17;
@@ -521,17 +522,17 @@ TEST(mulMatrix, example_1) {
 }
 
 TEST(mulMatrix, example_2) {
-  Matrix first(2);
+  Matrix<float> first(2);
   first(0, 0) = 1.5;
   first(0, 1) = 1.5;
   first(1, 0) = 1.5;
   first(1, 1) = 1.5;
-  Matrix second(2);
+  Matrix<float> second(2);
   second(0, 0) = 1;
   second(0, 1) = 1;
   second(1, 0) = 1;
   second(1, 1) = 1;
-  Matrix result(2);
+  Matrix<float> result(2);
   result(0, 0) = 3;
   result(0, 1) = 3;
   result(1, 0) = 3;
@@ -545,7 +546,7 @@ TEST(mulMatrix, example_2) {
 }
 
 TEST(calcComplements, example_1) {
-  Matrix first(3);
+  Matrix<short> first(3);
   first(0, 0) = 1;
   first(0, 1) = 2;
   first(0, 2) = 3;
@@ -555,8 +556,8 @@ TEST(calcComplements, example_1) {
   first(2, 0) = 5;
   first(2, 1) = 2;
   first(2, 2) = 1;
-  Matrix second = first.calcComplements();
-  Matrix result(3);
+  Matrix<short> second = first.calcComplements();
+  Matrix<short> result(3);
   result(0, 0) = 0;
   result(0, 1) = 10;
   result(0, 2) = -20;
@@ -574,7 +575,7 @@ TEST(calcComplements, example_1) {
 }
 
 TEST(calcComplements, example_2) {
-  Matrix first(3);
+  Matrix<char> first(3);
   first(0, 0) = 2;
   first(0, 1) = 5;
   first(0, 2) = 7;
@@ -584,8 +585,8 @@ TEST(calcComplements, example_2) {
   first(2, 0) = 5;
   first(2, 1) = -2;
   first(2, 2) = -3;
-  Matrix second = first.calcComplements();
-  Matrix result(3);
+  Matrix<char> second = first.calcComplements();
+  Matrix<char> result(3);
   result(0, 0) = -1;
   result(0, 1) = 38;
   result(0, 2) = -27;
@@ -603,17 +604,17 @@ TEST(calcComplements, example_2) {
 }
 
 TEST(inverseMatrix, example_1) {
-  Matrix first(2);
+  Matrix<float> first(2);
   first(0, 0) = -1.5;
   first(0, 1) = -1.5;
   first(1, 0) = -0.5;
   first(1, 1) = -1.5;
-  Matrix result(2);
+  Matrix<float> result(2);
   result(0, 0) = -1;
   result(0, 1) = 1;
   result(1, 0) = 1. / 3;
   result(1, 1) = -1;
-  Matrix second = first.inverseMatrix();
+  Matrix<float> second = first.inverseMatrix();
   for (int i = 0; i < first.getRow(); i++) {
     for (int j = 0; j < first.getColum(); j++) {
       EXPECT_NEAR(second(i, j), result(i, j), EPS);
@@ -622,7 +623,7 @@ TEST(inverseMatrix, example_1) {
 }
 
 TEST(inverseMatrix, example_2) {
-  Matrix first(3);
+  Matrix<int> first(3);
   first(0, 0) = 2;
   first(0, 1) = 5;
   first(0, 2) = 7;
@@ -632,8 +633,8 @@ TEST(inverseMatrix, example_2) {
   first(2, 0) = 5;
   first(2, 1) = -2;
   first(2, 2) = -3;
-  Matrix second = first.inverseMatrix();
-  Matrix result(3);
+  Matrix<int> second = first.inverseMatrix();
+  Matrix<int> result(3);
   result(0, 0) = 1;
   result(0, 1) = -1;
   result(0, 2) = 1;
@@ -651,7 +652,7 @@ TEST(inverseMatrix, example_2) {
 }
 
 TEST(operator_eq, example_1) {
-  Matrix first(3);
+  Matrix<short> first(3);
   first(0, 0) = 2;
   first(0, 1) = 5;
   first(0, 2) = 7;
@@ -661,7 +662,7 @@ TEST(operator_eq, example_1) {
   first(2, 0) = 5;
   first(2, 1) = -2;
   first(2, 2) = -3;
-  Matrix result(3);
+  Matrix<short> result(3);
   result(0, 0) = 1;
   result(0, 1) = -1;
   result(0, 2) = 1;
@@ -676,7 +677,7 @@ TEST(operator_eq, example_1) {
 }
 
 TEST(operator_eq, example_2) {
-  Matrix first(3);
+  Matrix<char> first(3);
   first(0, 0) = 2;
   first(0, 1) = 5;
   first(0, 2) = 7;
@@ -686,7 +687,7 @@ TEST(operator_eq, example_2) {
   first(2, 0) = 5;
   first(2, 1) = -2;
   first(2, 2) = -3;
-  Matrix result(3);
+  Matrix<char> result(3);
   result(0, 0) = 2;
   result(0, 1) = 5;
   result(0, 2) = 7;
@@ -701,7 +702,7 @@ TEST(operator_eq, example_2) {
 }
 
 TEST(operator_sum, example_1) {
-  Matrix first(3);
+  Matrix<bool> first(3);
   first(0, 0) = 2;
   first(0, 1) = 5;
   first(0, 2) = 7;
@@ -711,7 +712,7 @@ TEST(operator_sum, example_1) {
   first(2, 0) = 5;
   first(2, 1) = 2;
   first(2, 2) = 3;
-  Matrix second(3);
+  Matrix<bool> second(3);
   second(0, 0) = 2;
   second(0, 1) = 5;
   second(0, 2) = 7;
@@ -721,7 +722,7 @@ TEST(operator_sum, example_1) {
   second(2, 0) = 5;
   second(2, 1) = 2;
   second(2, 2) = 3;
-  Matrix result(3);
+  Matrix<bool> result(3);
   result(0, 0) = 2 * 2;
   result(0, 1) = 5 * 2;
   result(0, 2) = 7 * 2;
@@ -731,7 +732,7 @@ TEST(operator_sum, example_1) {
   result(2, 0) = 5 * 2;
   result(2, 1) = 2 * 2;
   result(2, 2) = 3 * 2;
-  Matrix summa = (first + second);
+  Matrix<bool> summa = (first + second);
   for (int i = 0; i < second.getRow(); i++) {
     for (int j = 0; j < second.getColum(); j++) {
       GTEST_ASSERT_EQ(summa(i, j), result(i, j));
@@ -740,7 +741,7 @@ TEST(operator_sum, example_1) {
 }
 
 TEST(operator_sum, example_2) {
-  Matrix first{3};
+  Matrix<int> first{3};
   first(0, 0) = 2;
   first(0, 1) = 5;
   first(0, 2) = 7;
@@ -750,7 +751,7 @@ TEST(operator_sum, example_2) {
   first(2, 0) = 5;
   first(2, 1) = 2;
   first(2, 2) = 3;
-  Matrix second{3};
+  Matrix<int> second{3};
   second(0, 0) = -2;
   second(0, 1) = -5;
   second(0, 2) = -7;
@@ -760,7 +761,7 @@ TEST(operator_sum, example_2) {
   second(2, 0) = -5;
   second(2, 1) = -2;
   second(2, 2) = -3;
-  Matrix result{3};
+  Matrix<int> result{3};
   result(0, 0) = 0;
   result(0, 1) = 0;
   result(0, 2) = 0;
@@ -779,7 +780,7 @@ TEST(operator_sum, example_2) {
 }
 
 TEST(operator_sub, example_1) {
-  Matrix first{3};
+  Matrix<short> first{3};
   first(0, 0) = 2;
   first(0, 1) = 5;
   first(0, 2) = 7;
@@ -789,7 +790,7 @@ TEST(operator_sub, example_1) {
   first(2, 0) = 5;
   first(2, 1) = 2;
   first(2, 2) = 3;
-  Matrix second{3};
+  Matrix<short> second{3};
   second(0, 0) = 2;
   second(0, 1) = 5;
   second(0, 2) = 7;
@@ -799,7 +800,7 @@ TEST(operator_sub, example_1) {
   second(2, 0) = 5;
   second(2, 1) = 2;
   second(2, 2) = 3;
-  Matrix result{3};
+  Matrix<short> result{3};
   result(0, 0) = 0;
   result(0, 1) = 0;
   result(0, 2) = 0;
@@ -809,29 +810,29 @@ TEST(operator_sub, example_1) {
   result(2, 0) = 0;
   result(2, 1) = 0;
   result(2, 2) = 0;
-  Matrix summa = first - second;
-  for (int i = 0; i < second.getRow(); i++) {
-    for (int j = 0; j < second.getColum(); j++) {
+  Matrix<short> summa = first - second;
+  for (int i = 0; i < second.getRow(); ++i) {
+    for (int j = 0; j < second.getColum(); ++j) {
       GTEST_ASSERT_EQ(summa(i, j), result(i, j));
     }
   }
 }
 
 TEST(operator_brackets, example_1) {
-  Matrix first(1);
+  Matrix<short> first(1);
   first(0, 0) = 15;
-  Matrix result(1);
+  Matrix<short> result(1);
   result(0, 0) = 15;
   GTEST_ASSERT_EQ(first(0, 0), result(0, 0));
 }
 
 TEST(operator_brackets, example_2) {
-  Matrix first(2);
+  Matrix<int> first(2);
   first(0, 0) = 1;
   first(0, 1) = 2;
   first(1, 0) = 3;
   first(1, 1) = 4;
-  Matrix result(2);
+  Matrix<int> result(2);
   result(0, 0) = 1;
   result(0, 1) = 2;
   result(1, 0) = 3;
@@ -844,37 +845,37 @@ TEST(operator_brackets, example_2) {
 }
 
 TEST(operator_mult_number, example_1) {
-  Matrix first(2);
-  first(0, 0) = 1;
-  first(0, 1) = 2;
-  first(1, 0) = 3;
-  first(1, 1) = 4;
-  Matrix result(2);
-  result(0, 0) = 1;
-  result(0, 1) = 2;
-  result(1, 0) = 3;
-  result(1, 1) = 4;
-  double n = 1.0;
+  Matrix<float> first(2);
+  first(0, 0) = 1.;
+  first(0, 1) = 2.;
+  first(1, 0) = 3.;
+  first(1, 1) = 4.;
+  Matrix<float> result(2);
+  result(0, 0) = 1.;
+  result(0, 1) = 2.;
+  result(1, 0) = 3.;
+  result(1, 1) = 4.;
+  float n = 1.0;
   first = first * n;
-  for (int i = 0; i < result.getRow(); i++) {
-    for (int j = 0; j < result.getColum(); j++) {
+  for (int i = 0; i < result.getRow(); ++i) {
+    for (int j = 0; j < result.getColum(); ++j) {
       GTEST_ASSERT_EQ(first(i, j), result(i, j));
     }
   }
 }
 
 TEST(operator_mult_number, example_2) {
-  Matrix first(2);
+  Matrix<int> first(2);
   first(0, 0) = 1;
   first(0, 1) = 2;
   first(1, 0) = 3;
   first(1, 1) = 4;
-  Matrix result(2);
+  Matrix<int> result(2);
   result(0, 0) = 2;
   result(0, 1) = 4;
   result(1, 0) = 6;
   result(1, 1) = 8;
-  double n = 2.0;
+  int n = 2;
   first = first * n;
   for (int i = 0; i < result.getRow(); i++) {
     for (int j = 0; j < result.getColum(); j++) {
@@ -884,17 +885,17 @@ TEST(operator_mult_number, example_2) {
 }
 
 TEST(operator_mult_number, example_3) {
-  Matrix first(2);
+  Matrix<int> first(2);
   first(0, 0) = 1;
   first(0, 1) = 2;
   first(1, 0) = 3;
   first(1, 1) = 4;
-  Matrix result(2);
+  Matrix<int> result(2);
   result(0, 0) = 0;
   result(0, 1) = 0;
   result(1, 0) = 0;
   result(1, 1) = 0;
-  double n = 0.0;
+  int n = 0;
   first = first * n;
   for (int i = 0; i < result.getRow(); i++) {
     for (int j = 0; j < result.getColum(); j++) {
@@ -904,17 +905,17 @@ TEST(operator_mult_number, example_3) {
 }
 
 TEST(operator_mult_number, example_4) {
-  Matrix first(2);
+  Matrix<short> first(2);
   first(0, 0) = 1;
   first(0, 1) = 2;
   first(1, 0) = 3;
   first(1, 1) = 4;
-  Matrix result(2);
+  Matrix<short> result(2);
   result(0, 0) = 0;
   result(0, 1) = 0;
   result(1, 0) = 0;
   result(1, 1) = 0;
-  double n = 0.0;
+  short n = 0;
   first *= n;
   for (int i = 0; i < result.getRow(); i++) {
     for (int j = 0; j < result.getColum(); j++) {
@@ -923,372 +924,372 @@ TEST(operator_mult_number, example_4) {
   }
 }
 
-TEST(operator_mult_number, friend_1) {
-  Matrix first(2);
-  first(0, 0) = 1;
-  first(0, 1) = 2;
-  first(1, 0) = 3;
-  first(1, 1) = 4;
-  Matrix result(2);
-  result(0, 0) = 0;
-  result(0, 1) = 0;
-  result(1, 0) = 0;
-  result(1, 1) = 0;
-  double n = 0.0;
-  first = n * first;
-  for (int i = 0; i < result.getRow(); i++) {
-    for (int j = 0; j < result.getColum(); j++) {
-      GTEST_ASSERT_EQ(first(i, j), result(i, j));
-    }
-  }
-}
-
-TEST(operator_mult_number, friend_2) {
-  Matrix first(2);
-  first(0, 0) = 1;
-  first(0, 1) = 2;
-  first(1, 0) = 3;
-  first(1, 1) = 4;
-  Matrix result(2);
-  result(0, 0) = 0;
-  result(0, 1) = 0;
-  result(1, 0) = 0;
-  result(1, 1) = 0;
-  first = 0.0 * first;
-  for (int i = 0; i < result.getRow(); i++) {
-    for (int j = 0; j < result.getColum(); j++) {
-      GTEST_ASSERT_EQ(first(i, j), result(i, j));
-    }
-  }
-}
-
-TEST(operator_mult_number_rvalue, example_4) {
-  Matrix first(2);
-  first(0, 0) = 1;
-  first(0, 1) = 2;
-  first(1, 0) = 3;
-  first(1, 1) = 4;
-  Matrix result(2);
-  result(0, 0) = 0;
-  result(0, 1) = 0;
-  result(1, 0) = 0;
-  result(1, 1) = 0;
-  first = first * 0.0;
-  for (int i = 0; i < result.getRow(); i++) {
-    for (int j = 0; j < result.getColum(); j++) {
-      GTEST_ASSERT_EQ(first(i, j), result(i, j));
-    }
-  }
-}
-
-TEST(operator_mult_matrix, example_1) {
-  Matrix first(2);
-  first(0, 0) = 1;
-  first(0, 1) = 2;
-  first(1, 0) = 3;
-  first(1, 1) = 4;
-  Matrix second(2);
-  second(0, 0) = 1;
-  second(0, 1) = 1;
-  second(1, 0) = 1;
-  second(1, 1) = 1;
-  Matrix result(2);
-  result(0, 0) = 3;
-  result(0, 1) = 3;
-  result(1, 0) = 7;
-  result(1, 1) = 7;
-  first = first * second;
-  for (int i = 0; i < result.getRow(); i++) {
-    for (int j = 0; j < result.getColum(); j++) {
-      GTEST_ASSERT_EQ(first(i, j), result(i, j));
-    }
-  }
-}
-
-TEST(operator_sum_eq, example_1) {
-  Matrix first(2);
-  first(0, 0) = 1;
-  first(0, 1) = 2;
-  first(1, 0) = 3;
-  first(1, 1) = 4;
-  Matrix second(2);
-  second(0, 0) = 1;
-  second(0, 1) = 1;
-  second(1, 0) = 1;
-  second(1, 1) = 1;
-  Matrix result(2);
-  result(0, 0) = 2;
-  result(0, 1) = 3;
-  result(1, 0) = 4;
-  result(1, 1) = 5;
-  first += second;
-  for (int i = 0; i < result.getRow(); i++) {
-    for (int j = 0; j < result.getColum(); j++) {
-      GTEST_ASSERT_EQ(first(i, j), result(i, j));
-    }
-  }
-}
-
-TEST(operator_sub_eq, example_1) {
-  Matrix first(2);
-  first(0, 0) = 1;
-  first(0, 1) = 2;
-  first(1, 0) = 3;
-  first(1, 1) = 4;
-  Matrix second(2);
-  second(0, 0) = 1;
-  second(0, 1) = 2;
-  second(1, 0) = 3;
-  second(1, 1) = 4;
-  Matrix result(2);
-  result(0, 0) = 0;
-  result(0, 1) = 0;
-  result(1, 0) = 0;
-  result(1, 1) = 0;
-  first -= second;
-  for (int i = 0; i < result.getRow(); i++) {
-    for (int j = 0; j < result.getColum(); j++) {
-      GTEST_ASSERT_EQ(first(i, j), result(i, j));
-    }
-  }
-}
-
-TEST(operator_eq_move, example_1) {
-  Matrix first(2);
-  Matrix second(2);
-  second(0, 0) = 1;
-  second(0, 1) = 2;
-  second(1, 0) = 3;
-  second(1, 1) = 4;
-  Matrix result(2);
-  result(0, 0) = 1;
-  result(0, 1) = 2;
-  result(1, 0) = 3;
-  result(1, 1) = 4;
-  first = std::move(second);
-  for (int i = 0; i < result.getRow(); i++) {
-    for (int j = 0; j < result.getColum(); j++) {
-      GTEST_ASSERT_EQ(first(i, j), result(i, j));
-    }
-  }
-}
-
-TEST(constructor_move, example_1) {
-  Matrix second(2);
-  second(0, 0) = 1;
-  second(0, 1) = 2;
-  second(1, 0) = 3;
-  second(1, 1) = 4;
-  Matrix result(2);
-  result(0, 0) = 1;
-  result(0, 1) = 2;
-  result(1, 0) = 3;
-  result(1, 1) = 4;
-  Matrix first(std::move(second));
-  for (int i = 0; i < result.getRow(); i++) {
-    for (int j = 0; j < result.getColum(); j++) {
-      GTEST_ASSERT_EQ(first(i, j), result(i, j));
-    }
-  }
-}
-
-TEST(setRow_scale, example_1) {
-  Matrix second(2);
-  second(0, 0) = 1;
-  second(0, 1) = 2;
-  second(1, 0) = 3;
-  second(1, 1) = 4;
-  second.setRow(3);
-  Matrix result(3, 2);
-  result(0, 0) = 1;
-  result(0, 1) = 2;
-  result(1, 0) = 3;
-  result(1, 1) = 4;
-  result(2, 0) = 0;
-  result(2, 1) = 0;
-  for (int i = 0; i < result.getRow(); i++) {
-    for (int j = 0; j < result.getColum(); j++) {
-      GTEST_ASSERT_EQ(second(i, j), result(i, j));
-    }
-  }
-}
-
-TEST(setRow_scale, example_2) {
-  Matrix second(3, 2);
-  second(0, 0) = 1;
-  second(0, 1) = 2;
-  second(1, 0) = 3;
-  second(1, 1) = 4;
-  second(2, 0) = 5;
-  second(2, 1) = 8;
-  second.setRow(2);
-  Matrix result(2, 2);
-  result(0, 0) = 1;
-  result(0, 1) = 2;
-  result(1, 0) = 3;
-  result(1, 1) = 4;
-  for (int i = 0; i < result.getRow(); i++) {
-    for (int j = 0; j < result.getColum(); j++) {
-      GTEST_ASSERT_EQ(second(i, j), result(i, j));
-    }
-  }
-}
-
-TEST(setColum_scale, example_1) {
-  Matrix second(2, 3);
-  second(0, 0) = 1;
-  second(0, 1) = 2;
-  second(0, 2) = 3;
-  second(1, 0) = 3;
-  second(1, 1) = 4;
-  second(1, 2) = 8;
-  second.setColum(2);
-  Matrix result(2, 2);
-  result(0, 0) = 1;
-  result(0, 1) = 2;
-  result(1, 0) = 3;
-  result(1, 1) = 4;
-  for (int i = 0; i < result.getRow(); i++) {
-    for (int j = 0; j < result.getColum(); j++) {
-      GTEST_ASSERT_EQ(second(i, j), result(i, j));
-    }
-  }
-}
-
-TEST(setColum_scale, example_2) {
-  Matrix second(2, 2);
-  second(0, 0) = 1;
-  second(0, 1) = 2;
-  second(1, 0) = 3;
-  second(1, 1) = 4;
-  second.setColum(3);
-  Matrix result(2, 3);
-  result(0, 0) = 1;
-  result(0, 1) = 2;
-  result(0, 2) = 0;
-  result(1, 0) = 3;
-  result(1, 1) = 4;
-  result(1, 2) = 0;
-  for (int i = 0; i < result.getRow(); i++) {
-    for (int j = 0; j < result.getColum(); j++) {
-      GTEST_ASSERT_EQ(second(i, j), result(i, j));
-    }
-  }
-}
-
-TEST(catch_exaption_square_constr, example_1) {
-  EXPECT_THROW(Matrix(-2), std::invalid_argument);
-}
-
-TEST(catch_exaption_square_constr, example_2) {
-  EXPECT_THROW(Matrix(0), std::invalid_argument);
-}
-
-TEST(catch_exaption_double_constr, example_1) {
-  EXPECT_THROW(Matrix(2, -2), std::invalid_argument);
-}
-
-TEST(catch_exaption_double_constr, example_2) {
-  EXPECT_THROW(Matrix(-2, 2), std::invalid_argument);
-}
-
-TEST(catch_exaption_double_constr, example_3) {
-  EXPECT_THROW(Matrix(0, 0), std::invalid_argument);
-}
-
-TEST(catch_exaption_sumMatrix, example_4) {
-  Matrix second(2, 2);
-  second(0, 0) = 1;
-  second(0, 1) = 2;
-  second(1, 0) = 3;
-  second(1, 1) = 4;
-  Matrix result(2, 3);
-  result(0, 0) = 1;
-  result(0, 1) = 2;
-  result(0, 2) = 0;
-  result(1, 0) = 3;
-  result(1, 1) = 4;
-  result(1, 2) = 0;
-  EXPECT_THROW(second.sumMatrix(result), std::invalid_argument);
-}
-
-TEST(catch_exaption_subMatrix, example_5) {
-  Matrix second(2, 2);
-  second(0, 0) = 1;
-  second(0, 1) = 2;
-  second(1, 0) = 3;
-  second(1, 1) = 4;
-  Matrix result(2, 3);
-  result(0, 0) = 1;
-  result(0, 1) = 2;
-  result(0, 2) = 0;
-  result(1, 0) = 3;
-  result(1, 1) = 4;
-  result(1, 2) = 0;
-  EXPECT_THROW(second.subMatrix(result), std::invalid_argument);
-}
-
-TEST(catch_exaption_mulMatrix, example_6) {
-  Matrix second(2, 2);
-  second(0, 0) = 1;
-  second(0, 1) = 2;
-  second(1, 0) = 3;
-  second(1, 1) = 4;
-  Matrix result(2, 3);
-  result(0, 0) = 1;
-  result(0, 1) = 2;
-  result(0, 2) = 0;
-  result(1, 0) = 3;
-  result(1, 1) = 4;
-  result(1, 2) = 0;
-  EXPECT_THROW(result.mulMatrix(second), std::logic_error);
-}
-
-TEST(catch_exaption_determinant, example_7) {
-  Matrix result(2, 3);
-  result(0, 0) = 1;
-  result(0, 1) = 2;
-  result(0, 2) = 0;
-  result(1, 0) = 3;
-  result(1, 1) = 4;
-  result(1, 2) = 0;
-  EXPECT_THROW(result.determinant(), std::logic_error);
-}
-
-TEST(catch_exaption_calcComplements, example_8) {
-  Matrix result(2, 3);
-  result(0, 0) = 1;
-  result(0, 1) = 2;
-  result(0, 2) = 0;
-  result(1, 0) = 3;
-  result(1, 1) = 4;
-  result(1, 2) = 0;
-  EXPECT_THROW(result.calcComplements(), std::logic_error);
-}
-
-TEST(catch_exaption_inverse, example_9) {
-  Matrix result(3, 3);
-  result(0, 0) = 1;
-  result(0, 1) = 2;
-  result(0, 2) = 3;
-  result(1, 0) = 4;
-  result(1, 1) = 5;
-  result(1, 2) = 6;
-  result(2, 0) = 7;
-  result(2, 1) = 8;
-  result(2, 2) = 9;
-  EXPECT_THROW(result.inverseMatrix(), std::logic_error);
-}
-
-TEST(catch_exaption_bracket_operator, example_10) {
-  Matrix result(3, 3);
-  EXPECT_THROW(result(3, 4) = 2, std::logic_error);
-}
-
-TEST(catch_exaption_bracket_operator, example_11) {
-  Matrix result(3, 3);
-  EXPECT_THROW(result(-3, 4) = 2, std::logic_error);
-}
+//TEST(operator_mult_number, friend_1) {
+//  Matrix first(2);
+//  first(0, 0) = 1;
+//  first(0, 1) = 2;
+//  first(1, 0) = 3;
+//  first(1, 1) = 4;
+//  Matrix result(2);
+//  result(0, 0) = 0;
+//  result(0, 1) = 0;
+//  result(1, 0) = 0;
+//  result(1, 1) = 0;
+//  double n = 0.0;
+//  first = n * first;
+//  for (int i = 0; i < result.getRow(); i++) {
+//    for (int j = 0; j < result.getColum(); j++) {
+//      GTEST_ASSERT_EQ(first(i, j), result(i, j));
+//    }
+//  }
+//}
+//
+//TEST(operator_mult_number, friend_2) {
+//  Matrix first(2);
+//  first(0, 0) = 1;
+//  first(0, 1) = 2;
+//  first(1, 0) = 3;
+//  first(1, 1) = 4;
+//  Matrix result(2);
+//  result(0, 0) = 0;
+//  result(0, 1) = 0;
+//  result(1, 0) = 0;
+//  result(1, 1) = 0;
+//  first = 0.0 * first;
+//  for (int i = 0; i < result.getRow(); i++) {
+//    for (int j = 0; j < result.getColum(); j++) {
+//      GTEST_ASSERT_EQ(first(i, j), result(i, j));
+//    }
+//  }
+//}
+//
+//TEST(operator_mult_number_rvalue, example_4) {
+//  Matrix first(2);
+//  first(0, 0) = 1;
+//  first(0, 1) = 2;
+//  first(1, 0) = 3;
+//  first(1, 1) = 4;
+//  Matrix result(2);
+//  result(0, 0) = 0;
+//  result(0, 1) = 0;
+//  result(1, 0) = 0;
+//  result(1, 1) = 0;
+//  first = first * 0.0;
+//  for (int i = 0; i < result.getRow(); i++) {
+//    for (int j = 0; j < result.getColum(); j++) {
+//      GTEST_ASSERT_EQ(first(i, j), result(i, j));
+//    }
+//  }
+//}
+//
+//TEST(operator_mult_matrix, example_1) {
+//  Matrix first(2);
+//  first(0, 0) = 1;
+//  first(0, 1) = 2;
+//  first(1, 0) = 3;
+//  first(1, 1) = 4;
+//  Matrix second(2);
+//  second(0, 0) = 1;
+//  second(0, 1) = 1;
+//  second(1, 0) = 1;
+//  second(1, 1) = 1;
+//  Matrix result(2);
+//  result(0, 0) = 3;
+//  result(0, 1) = 3;
+//  result(1, 0) = 7;
+//  result(1, 1) = 7;
+//  first = first * second;
+//  for (int i = 0; i < result.getRow(); i++) {
+//    for (int j = 0; j < result.getColum(); j++) {
+//      GTEST_ASSERT_EQ(first(i, j), result(i, j));
+//    }
+//  }
+//}
+//
+//TEST(operator_sum_eq, example_1) {
+//  Matrix first(2);
+//  first(0, 0) = 1;
+//  first(0, 1) = 2;
+//  first(1, 0) = 3;
+//  first(1, 1) = 4;
+//  Matrix second(2);
+//  second(0, 0) = 1;
+//  second(0, 1) = 1;
+//  second(1, 0) = 1;
+//  second(1, 1) = 1;
+//  Matrix result(2);
+//  result(0, 0) = 2;
+//  result(0, 1) = 3;
+//  result(1, 0) = 4;
+//  result(1, 1) = 5;
+//  first += second;
+//  for (int i = 0; i < result.getRow(); i++) {
+//    for (int j = 0; j < result.getColum(); j++) {
+//      GTEST_ASSERT_EQ(first(i, j), result(i, j));
+//    }
+//  }
+//}
+//
+//TEST(operator_sub_eq, example_1) {
+//  Matrix first(2);
+//  first(0, 0) = 1;
+//  first(0, 1) = 2;
+//  first(1, 0) = 3;
+//  first(1, 1) = 4;
+//  Matrix second(2);
+//  second(0, 0) = 1;
+//  second(0, 1) = 2;
+//  second(1, 0) = 3;
+//  second(1, 1) = 4;
+//  Matrix result(2);
+//  result(0, 0) = 0;
+//  result(0, 1) = 0;
+//  result(1, 0) = 0;
+//  result(1, 1) = 0;
+//  first -= second;
+//  for (int i = 0; i < result.getRow(); i++) {
+//    for (int j = 0; j < result.getColum(); j++) {
+//      GTEST_ASSERT_EQ(first(i, j), result(i, j));
+//    }
+//  }
+//}
+//
+//TEST(operator_eq_move, example_1) {
+//  Matrix first(2);
+//  Matrix second(2);
+//  second(0, 0) = 1;
+//  second(0, 1) = 2;
+//  second(1, 0) = 3;
+//  second(1, 1) = 4;
+//  Matrix result(2);
+//  result(0, 0) = 1;
+//  result(0, 1) = 2;
+//  result(1, 0) = 3;
+//  result(1, 1) = 4;
+//  first = std::move(second);
+//  for (int i = 0; i < result.getRow(); i++) {
+//    for (int j = 0; j < result.getColum(); j++) {
+//      GTEST_ASSERT_EQ(first(i, j), result(i, j));
+//    }
+//  }
+//}
+//
+//TEST(constructor_move, example_1) {
+//  Matrix second(2);
+//  second(0, 0) = 1;
+//  second(0, 1) = 2;
+//  second(1, 0) = 3;
+//  second(1, 1) = 4;
+//  Matrix result(2);
+//  result(0, 0) = 1;
+//  result(0, 1) = 2;
+//  result(1, 0) = 3;
+//  result(1, 1) = 4;
+//  Matrix first(std::move(second));
+//  for (int i = 0; i < result.getRow(); i++) {
+//    for (int j = 0; j < result.getColum(); j++) {
+//      GTEST_ASSERT_EQ(first(i, j), result(i, j));
+//    }
+//  }
+//}
+//
+//TEST(setRow_scale, example_1) {
+//  Matrix second(2);
+//  second(0, 0) = 1;
+//  second(0, 1) = 2;
+//  second(1, 0) = 3;
+//  second(1, 1) = 4;
+//  second.setRow(3);
+//  Matrix result(3, 2);
+//  result(0, 0) = 1;
+//  result(0, 1) = 2;
+//  result(1, 0) = 3;
+//  result(1, 1) = 4;
+//  result(2, 0) = 0;
+//  result(2, 1) = 0;
+//  for (int i = 0; i < result.getRow(); i++) {
+//    for (int j = 0; j < result.getColum(); j++) {
+//      GTEST_ASSERT_EQ(second(i, j), result(i, j));
+//    }
+//  }
+//}
+//
+//TEST(setRow_scale, example_2) {
+//  Matrix second(3, 2);
+//  second(0, 0) = 1;
+//  second(0, 1) = 2;
+//  second(1, 0) = 3;
+//  second(1, 1) = 4;
+//  second(2, 0) = 5;
+//  second(2, 1) = 8;
+//  second.setRow(2);
+//  Matrix result(2, 2);
+//  result(0, 0) = 1;
+//  result(0, 1) = 2;
+//  result(1, 0) = 3;
+//  result(1, 1) = 4;
+//  for (int i = 0; i < result.getRow(); i++) {
+//    for (int j = 0; j < result.getColum(); j++) {
+//      GTEST_ASSERT_EQ(second(i, j), result(i, j));
+//    }
+//  }
+//}
+//
+//TEST(setColum_scale, example_1) {
+//  Matrix second(2, 3);
+//  second(0, 0) = 1;
+//  second(0, 1) = 2;
+//  second(0, 2) = 3;
+//  second(1, 0) = 3;
+//  second(1, 1) = 4;
+//  second(1, 2) = 8;
+//  second.setColum(2);
+//  Matrix result(2, 2);
+//  result(0, 0) = 1;
+//  result(0, 1) = 2;
+//  result(1, 0) = 3;
+//  result(1, 1) = 4;
+//  for (int i = 0; i < result.getRow(); i++) {
+//    for (int j = 0; j < result.getColum(); j++) {
+//      GTEST_ASSERT_EQ(second(i, j), result(i, j));
+//    }
+//  }
+//}
+//
+//TEST(setColum_scale, example_2) {
+//  Matrix second(2, 2);
+//  second(0, 0) = 1;
+//  second(0, 1) = 2;
+//  second(1, 0) = 3;
+//  second(1, 1) = 4;
+//  second.setColum(3);
+//  Matrix result(2, 3);
+//  result(0, 0) = 1;
+//  result(0, 1) = 2;
+//  result(0, 2) = 0;
+//  result(1, 0) = 3;
+//  result(1, 1) = 4;
+//  result(1, 2) = 0;
+//  for (int i = 0; i < result.getRow(); i++) {
+//    for (int j = 0; j < result.getColum(); j++) {
+//      GTEST_ASSERT_EQ(second(i, j), result(i, j));
+//    }
+//  }
+//}
+//
+//TEST(catch_exaption_square_constr, example_1) {
+//  EXPECT_THROW(Matrix(-2), std::invalid_argument);
+//}
+//
+//TEST(catch_exaption_square_constr, example_2) {
+//  EXPECT_THROW(Matrix(0), std::invalid_argument);
+//}
+//
+//TEST(catch_exaption_double_constr, example_1) {
+//  EXPECT_THROW(Matrix(2, -2), std::invalid_argument);
+//}
+//
+//TEST(catch_exaption_double_constr, example_2) {
+//  EXPECT_THROW(Matrix(-2, 2), std::invalid_argument);
+//}
+//
+//TEST(catch_exaption_double_constr, example_3) {
+//  EXPECT_THROW(Matrix(0, 0), std::invalid_argument);
+//}
+//
+//TEST(catch_exaption_sumMatrix, example_4) {
+//  Matrix second(2, 2);
+//  second(0, 0) = 1;
+//  second(0, 1) = 2;
+//  second(1, 0) = 3;
+//  second(1, 1) = 4;
+//  Matrix result(2, 3);
+//  result(0, 0) = 1;
+//  result(0, 1) = 2;
+//  result(0, 2) = 0;
+//  result(1, 0) = 3;
+//  result(1, 1) = 4;
+//  result(1, 2) = 0;
+//  EXPECT_THROW(second.sumMatrix(result), std::invalid_argument);
+//}
+//
+//TEST(catch_exaption_subMatrix, example_5) {
+//  Matrix second(2, 2);
+//  second(0, 0) = 1;
+//  second(0, 1) = 2;
+//  second(1, 0) = 3;
+//  second(1, 1) = 4;
+//  Matrix result(2, 3);
+//  result(0, 0) = 1;
+//  result(0, 1) = 2;
+//  result(0, 2) = 0;
+//  result(1, 0) = 3;
+//  result(1, 1) = 4;
+//  result(1, 2) = 0;
+//  EXPECT_THROW(second.subMatrix(result), std::invalid_argument);
+//}
+//
+//TEST(catch_exaption_mulMatrix, example_6) {
+//  Matrix second(2, 2);
+//  second(0, 0) = 1;
+//  second(0, 1) = 2;
+//  second(1, 0) = 3;
+//  second(1, 1) = 4;
+//  Matrix result(2, 3);
+//  result(0, 0) = 1;
+//  result(0, 1) = 2;
+//  result(0, 2) = 0;
+//  result(1, 0) = 3;
+//  result(1, 1) = 4;
+//  result(1, 2) = 0;
+//  EXPECT_THROW(result.mulMatrix(second), std::logic_error);
+//}
+//
+//TEST(catch_exaption_determinant, example_7) {
+//  Matrix result(2, 3);
+//  result(0, 0) = 1;
+//  result(0, 1) = 2;
+//  result(0, 2) = 0;
+//  result(1, 0) = 3;
+//  result(1, 1) = 4;
+//  result(1, 2) = 0;
+//  EXPECT_THROW(result.determinant(), std::logic_error);
+//}
+//
+//TEST(catch_exaption_calcComplements, example_8) {
+//  Matrix result(2, 3);
+//  result(0, 0) = 1;
+//  result(0, 1) = 2;
+//  result(0, 2) = 0;
+//  result(1, 0) = 3;
+//  result(1, 1) = 4;
+//  result(1, 2) = 0;
+//  EXPECT_THROW(result.calcComplements(), std::logic_error);
+//}
+//
+//TEST(catch_exaption_inverse, example_9) {
+//  Matrix result(3, 3);
+//  result(0, 0) = 1;
+//  result(0, 1) = 2;
+//  result(0, 2) = 3;
+//  result(1, 0) = 4;
+//  result(1, 1) = 5;
+//  result(1, 2) = 6;
+//  result(2, 0) = 7;
+//  result(2, 1) = 8;
+//  result(2, 2) = 9;
+//  EXPECT_THROW(result.inverseMatrix(), std::logic_error);
+//}
+//
+//TEST(catch_exaption_bracket_operator, example_10) {
+//  Matrix result(3, 3);
+//  EXPECT_THROW(result(3, 4) = 2, std::logic_error);
+//}
+//
+//TEST(catch_exaption_bracket_operator, example_11) {
+//  Matrix result(3, 3);
+//  EXPECT_THROW(result(-3, 4) = 2, std::logic_error);
+//}
 
 int main() {
   ::testing::InitGoogleTest();

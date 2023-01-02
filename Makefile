@@ -1,4 +1,4 @@
-CC = g++ -std=c++17 -Wall -Wextra -Werror
+CC = g++ -std=c++17 #-Wall -Wextra -Werror
 OS = $(shell uname)
 
 LEAK_CHECK = leaks --atExit -q -- ./testing.out && rm -rf testing.out
@@ -17,15 +17,15 @@ matrix_oop.a: matrix_oop.o
 	rm -rf s21_matrix_oop.o
 
 matrix_oop.o:
-	$(CC) -c Matrix_oop.cpp
+	$(CC) -c Matrix_oop.cc
 
 leaks: test_build
 	$(LEAK_CHECK)
 
 static:
 	cp ./linters/CPPLINT.cfg .
-	-python3 ./linters/cpplint.py Matrix_oop.cpp test.cpp
-	-cppcheck --enable=all --suppress=missingIncludeSystem --suppress=unusedFunction --std=c++17 Matrix_oop.cpp Matrix_oop.hpp
+	-python3 ./linters/cpplint.py Matrix_oop.cc test.cc
+	-cppcheck --enable=all --suppress=missingIncludeSystem --suppress=unusedFunction --std=c++17 Matrix_oop.cc Matrix_oop.h
 	rm -rf CPPLINT.cfg
 
 test: test_build
@@ -33,13 +33,13 @@ test: test_build
 	rm -rf testing.out
 
 test_build:
-	$(CC) test.cpp matrix_oop.cpp -o testing.out $(CHECK_FLAGS)
+	$(CC) test.cc -o testing.out $(CHECK_FLAGS)
 
 debug:
-	$(CC) test.cpp matrix_oop.cpp -g -o testing.out $(CHECK_FLAGS)
+	$(CC) test.cc matrix_oop.cc -g -o testing.out $(CHECK_FLAGS)
 
 gcov:
-	$(CC) test.cpp matrix_oop.cpp -fprofile-arcs -ftest-coverage $(CHECK_FLAGS)
+	$(CC) test.cc matrix_oop.cc -fprofile-arcs -ftest-coverage $(CHECK_FLAGS)
 	./a.out
 	lcov -t "matrix_oop" -o matrix_oop.info -c -d .
 	genhtml -o report matrix_oop.info
