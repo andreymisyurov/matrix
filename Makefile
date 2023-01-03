@@ -1,6 +1,5 @@
 CC = g++ -std=c++17 -Wall -Wextra -Werror
 OS = $(shell uname)
-
 SUPPRESS = --suppress=missingIncludeSystem --suppress=unusedFunction --suppress=unmatchedSuppression --suppress=syntaxError
 
 LEAK_CHECK = leaks --atExit -q -- ./testing.out && rm -rf testing.out
