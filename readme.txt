@@ -1,5 +1,18 @@
-My own class for creating matrices and operations on them.
+Шаблонный класс Matrix. Работает с любыми примитивными типами данных: short, int, char, float, double и другими
+Класс разработан на языке C++ стандарта C++17 используя компилятор gcc
+Полное покрытие unit-tests используя библиотеку GTest
+Makefile для сборки библиотеки (с целями all, clean, test)
 
-- The program developed in C++ language of C++17 standard using gcc compiler
-- Full coverage of library functions code with unit-tests using the GTest library
-- Makefile for building the library and tests (with targets all, clean, test, matrix.a)
+Для создания матрицы имеются конструкторы:
+  auto mtx = Matrix<int>(5, 5); - достаточно передать конструктору два значения инт(кол-во строк и столбцов)
+  auto mtx = Matrix<double>(5); - или одно значение для квадратной матрицы
+
+Класс обладает такими функциями как:
+    - сравнение двух матриц
+    - сложение/вычитание
+    - умножение двух матриц
+    - умножение матрицы на число/умножение числа на матрицу
+    - транспонирование матрицы
+    - нахождение матрицы алгебраических дополнений
+    - вычисление обратной матрицы
+    - нахождение детерминанта матрицы

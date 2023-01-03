@@ -1,4 +1,90 @@
-//using namespace victoriv;
+#ifndef MY_MATRIX_H_
+#define MY_MATRIX_H_
+
+#include <cmath>
+#include <exception>
+
+namespace victoriv {
+
+inline constexpr auto EPS = 1e-6;
+
+class MyException : std::exception {
+ public:
+  explicit MyException(std::string &&ex_text) noexcept : m_text(std::move(ex_text)) {}
+  explicit MyException(const std::string &ex_text) noexcept : m_text(ex_text) {}
+  ~MyException() noexcept = default;
+  const char *what() const noexcept override { return m_text.c_str(); }
+
+ private:
+  std::string m_text;
+};
+
+template <typename T>
+class Matrix {
+ public:
+  auto getColum() -> int { return m_column; };
+  auto getRow() -> int { return m_row; };
+  auto setRow(int x) -> void;
+  auto setColum(int x) -> void;
+
+ public:
+  Matrix() = delete;
+  explicit Matrix(int value);
+  Matrix(int value_row, int value_column);
+  Matrix(Matrix<T> &&other);
+  Matrix(const Matrix &other);
+  ~Matrix() { remove(); }
+
+ public:
+  auto eqMatrix(const Matrix<T> &other) const -> bool;
+  auto sumMatrix(const Matrix<T> &other) -> void;
+  auto subMatrix(const Matrix<T> &other) -> void;
+  auto mulNumber(T num) -> void;
+  auto mulMatrix(const Matrix<T> &other) -> void;
+  auto determinant() -> double;
+  auto transpose() -> Matrix<T>;
+  auto calcComplements() -> Matrix<T>;
+  auto inverseMatrix() -> Matrix<T>;
+
+ public:
+  auto operator=(const Matrix<T> &other) -> Matrix<T> &;
+  auto operator=(Matrix<T> &&other) -> Matrix<T> &;
+  auto operator+(const Matrix<T> &other) -> Matrix<T>;
+  auto operator-(const Matrix<T> &other) -> Matrix<T>;
+  auto operator+=(const Matrix<T> &other) -> Matrix<T>;
+  auto operator-=(const Matrix<T> &other) -> Matrix<T>;
+  auto operator*=(T &&value) -> Matrix<T>;
+  auto operator*=(const T &value) -> Matrix<T>;
+  auto operator()(int i, int j) -> T &;
+  auto operator*(const Matrix<T> &other) -> Matrix<T>;
+  auto operator*(T &&value) -> Matrix<T>;
+  auto operator*(const T &value) -> Matrix<T>;
+  auto operator==(const Matrix<T> &other) const -> bool;
+  auto friend operator*(const T &value, const Matrix<T> &other) -> Matrix<T> {
+    return Matrix<T>(other.m_row, other.m_column) * value;
+  }
+  auto friend operator*(T &&value, const Matrix &other) -> Matrix {
+    T temp = value;
+    return temp * other;
+  }
+
+ private:
+  auto static copyMatrix(int row, int m_column, const Matrix &left,
+                         const Matrix &right) -> void;
+  auto create() -> void;
+  auto remove() -> void;
+  auto checkData(const Matrix<T> &other) -> void;
+  auto checkForMult(const Matrix<T> &other) -> void;
+  auto checkSquare() -> void;
+  auto checkSetter(int value) -> void;
+  auto checkConstructor(int value_row, int value_column) -> void;
+  auto getMinor(int i, int j) -> Matrix<T>;
+
+ private:
+  int m_column = 0;
+  int m_row = 0;
+  T **m_matrix = nullptr;
+};
 
 template <typename T>
 Matrix<T>::Matrix(int value) : Matrix(value, value) {}
@@ -12,41 +98,48 @@ Matrix<T>::Matrix(int value_row, int value_column) {
   create();
 }
 
-//Matrix::Matrix(Matrix &&other) { *this = other; }
+template <typename T>
+Matrix<T>::Matrix(Matrix<T> &&other) {
+  *this = other;
+}
 
 template <typename T>
-Matrix<T>::Matrix(const Matrix<T> &other) { *this = other; }
+Matrix<T>::Matrix(const Matrix<T> &other) {
+  *this = other;
+}
 
-//void Matrix::setRow(int new_row) {
-//  checkSetter(new_row);
-//  if (m_row == new_row) return;
-//  Matrix temp(new_row, m_column);
-//  int real_row = (new_row < m_row) ? new_row : m_row;
-//  copyMatrix(real_row, m_column, temp, *this);
-//
-//  *this = temp;
-//}
-//
-//void Matrix::checkSetter(int value) {
-//  if (value < 1) throw std::invalid_argument("Bad value for row or colum.");
-//}
-//
-//void Matrix::setColum(int new_column) {
-//  checkSetter(new_column);
-//  if (m_row == new_column) return;
-//  Matrix temp(m_row, new_column);
-//  int real_column = (new_column < m_column) ? new_column : m_column;
-//  copyMatrix(m_row, real_column, temp, *this);
-//
-//  *this = temp;
-//}
+template <typename T>
+void Matrix<T>::setRow(int new_row) {
+  checkSetter(new_row);
+  if (m_row == new_row) return;
+  Matrix<T> temp(new_row, m_column);
+  int real_row = (new_row < m_row) ? new_row : m_row;
+  copyMatrix(real_row, m_column, temp, *this);
 
+  *this = temp;
+}
+
+template <typename T>
+void Matrix<T>::checkSetter(int value) {
+  if (value < 1) throw MyException("Bad value for row or colum.");
+}
+
+template <typename T>
+void Matrix<T>::setColum(int new_column) {
+  checkSetter(new_column);
+  if (m_row == new_column) return;
+  Matrix temp(m_row, new_column);
+  int real_column = (new_column < m_column) ? new_column : m_column;
+  copyMatrix(m_row, real_column, temp, *this);
+
+  *this = temp;
+}
 
 template <typename T>
 Matrix<T> Matrix<T>::inverseMatrix() {
   double determ = determinant();
   if (determ == 0) {
-    throw std::logic_error("Matrix's determinant is zero");
+    throw MyException("Matrix's determinant is zero");
   }
   Matrix<T> temp = calcComplements();
   Matrix<T> result = temp.transpose();
@@ -152,7 +245,9 @@ Matrix<T> Matrix<T>::transpose() {
 }
 
 template <typename T>
-bool Matrix<T>::operator==(const Matrix<T> &other) const { return eqMatrix(other); }
+bool Matrix<T>::operator==(const Matrix<T> &other) const {
+  return eqMatrix(other);
+}
 
 template <typename T>
 Matrix<T> &Matrix<T>::operator=(const Matrix<T> &other) {
@@ -165,14 +260,15 @@ Matrix<T> &Matrix<T>::operator=(const Matrix<T> &other) {
   return *this;
 }
 
-//Matrix &Matrix::operator=(Matrix &&other) {
-//  if (this != &other) {
-//    std::swap(m_column, other.m_column);
-//    std::swap(m_row, other.m_row);
-//    std::swap(m_matrix, other.m_matrix);
-//  }
-//  return *this;
-//}
+template <typename T>
+Matrix<T> &Matrix<T>::operator=(Matrix<T> &&other) {
+  if (this != &other) {
+    std::swap(m_column, other.m_column);
+    std::swap(m_row, other.m_row);
+    std::swap(m_matrix, other.m_matrix);
+  }
+  return *this;
+}
 
 template <typename T>
 Matrix<T> Matrix<T>::operator-(const Matrix<T> &other) {
@@ -188,12 +284,12 @@ Matrix<T> Matrix<T>::operator+(const Matrix<T> &other) {
   return temp;
 }
 
-//template <typename T>
-//Matrix<T> Matrix<T>::operator*(const Matrix<T> &other) {
-//  Matrix<T> temp(*this);
-//  temp.mulMatrix(other);
-//  return temp;
-//}
+template <typename T>
+Matrix<T> Matrix<T>::operator*(const Matrix<T> &other) {
+  Matrix<T> temp(*this);
+  temp.mulMatrix(other);
+  return temp;
+}
 
 template <typename T>
 Matrix<T> Matrix<T>::operator*(const T &value) {
@@ -202,12 +298,12 @@ Matrix<T> Matrix<T>::operator*(const T &value) {
   return temp;
 }
 
-//template <typename T>
-//Matrix<T> Matrix<T>::operator*(T &&value) {
-//  Matrix<T> temp(*this);
-//  temp.mulNumber(value);
-//  return temp;
-//}
+template <typename T>
+Matrix<T> Matrix<T>::operator*(T &&value) {
+  Matrix<T> temp(*this);
+  auto num = value;
+  return temp * num;
+}
 
 template <typename T>
 Matrix<T> Matrix<T>::operator+=(const Matrix<T> &other) {
@@ -215,16 +311,18 @@ Matrix<T> Matrix<T>::operator+=(const Matrix<T> &other) {
   return *this;
 }
 
-//Matrix Matrix::operator-=(const Matrix &other) {
-//  subMatrix(other);
-//  return *this;
-//}
+template <typename T>
+Matrix<T> Matrix<T>::operator-=(const Matrix<T> &other) {
+  subMatrix(other);
+  return *this;
+}
 
-//template <typename T>
-//Matrix<T> Matrix<T>::operator*=(T &&value) {
-//  mulNumber(value);
-//  return *this;
-//}
+template <typename T>
+Matrix<T> Matrix<T>::operator*=(T &&value) {
+  auto temp = value;
+  *this *= temp;
+  return *this;
+}
 
 template <typename T>
 Matrix<T> Matrix<T>::operator*=(const T &value) {
@@ -235,25 +333,18 @@ Matrix<T> Matrix<T>::operator*=(const T &value) {
 template <typename T>
 T &Matrix<T>::operator()(int i, int j) {
   if (i < 0 || j < 0 || i >= m_row || j >= m_column) {
-    throw std::logic_error("Nothing to get");
+    throw MyException("Nothing to get");
   }
   return m_matrix[i][j];
 }
 
-//Matrix victoriv::operator*(double &&value, const Matrix &other) {
-//  return Matrix(other.m_row, other.m_column) * value;
-//}
-//
-//Matrix victoriv::operator*(double &value, const Matrix &other) {
-//  return Matrix(other.m_row, other.m_column) * value;
-//}
-//
-//void Matrix::remove() {
-//  for (int i = 0; i < m_row; ++i) {
-//    delete[] m_matrix[i];
-//  }
-//  delete[] m_matrix;
-//}
+template <typename T>
+void Matrix<T>::remove() {
+  for (int i = 0; i < m_row; ++i) {
+    delete[] m_matrix[i];
+  }
+  delete[] m_matrix;
+}
 
 template <typename T>
 void Matrix<T>::create() {
@@ -285,7 +376,7 @@ Matrix<T> Matrix<T>::getMinor(int i, int j) {
 
 template <typename T>
 void Matrix<T>::copyMatrix(int row, int colum, const Matrix<T> &left,
-                        const Matrix<T> &right) {
+                           const Matrix<T> &right) {
   for (int i = 0; i < row; ++i) {
     for (int j = 0; j < colum; ++j) {
       left.m_matrix[i][j] = right.m_matrix[i][j];
@@ -296,23 +387,25 @@ void Matrix<T>::copyMatrix(int row, int colum, const Matrix<T> &left,
 template <typename T>
 void Matrix<T>::checkData(const Matrix<T> &other) {
   if (m_row != other.m_row || m_column != other.m_column)
-    throw std::invalid_argument("Matrix have different rows or columns");
+    throw MyException("Matrix have different rows or columns");
 }
-
 
 template <typename T>
 void Matrix<T>::checkForMult(const Matrix<T> &other) {
-  if (m_column != other.m_row)
-    throw std::logic_error("Not equals rows and column");
+  if (m_column != other.m_row) throw MyException("Not equals rows and column");
 }
 
 template <typename T>
 void Matrix<T>::checkSquare() {
-  if (m_column != m_row) throw std::logic_error("Matrix isn't square");
+  if (m_column != m_row) throw MyException("Matrix isn't square");
 }
 
 template <typename T>
 void Matrix<T>::checkConstructor(int value_row, int value_column) {
   if (value_column < 1 || value_row < 1)
-    throw std::invalid_argument("Bad value for row or colum.");
+    throw MyException("Bad value for row or colum.");
 }
+
+}  // namespace victoriv
+
+#endif  // MY_MATRIX_H_
