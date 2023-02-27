@@ -12,8 +12,9 @@ inline constexpr auto EPS = 1e-6;
 class MyException : std::exception {
  public:
   explicit MyException(std::string &&ex_text) noexcept
-      : m_text(std::move(ex_text)) {}
-  explicit MyException(const std::string &ex_text) noexcept : m_text(ex_text) {}
+                                : m_text(std::move(ex_text)) {}
+  explicit MyException(const std::string &ex_text) noexcept
+                                           : m_text(ex_text) {}
   ~MyException() noexcept = default;
   const char *what() const noexcept override { return m_text.c_str(); }
 
@@ -24,10 +25,10 @@ class MyException : std::exception {
 template <typename T>
 class Matrix {
  public:
-  auto getColum() -> int { return m_column; };
-  auto getRow() -> int { return m_row; };
-  auto setRow(int x) -> void;
-  auto setColum(int x) -> void;
+  auto getColum()       -> int { return m_column; };
+  auto getRow()         -> int { return m_row; };
+  auto setRow(int x)    -> void;
+  auto setColum(int x)  -> void;
 
  public:
   Matrix() = delete;
@@ -39,48 +40,48 @@ class Matrix {
 
  public:
   auto eqMatrix(const Matrix<T> &other) const -> bool;
-  auto sumMatrix(const Matrix<T> &other) -> void;
-  auto subMatrix(const Matrix<T> &other) -> void;
-  auto mulNumber(T num) -> void;
-  auto mulMatrix(const Matrix<T> &other) -> void;
-  auto determinant() -> double;
-  auto transpose() -> Matrix<T>;
-  auto calcComplements() -> Matrix<T>;
-  auto inverseMatrix() -> Matrix<T>;
+  auto sumMatrix(const Matrix<T> &other)      -> void;
+  auto subMatrix(const Matrix<T> &other)      -> void;
+  auto mulMatrix(const Matrix<T> &other)      -> void;
+  auto mulNumber(T num)                       -> void;
+  auto determinant()                          -> double;
+  auto transpose()                            -> Matrix<T>;
+  auto calcComplements()                      -> Matrix<T>;
+  auto inverseMatrix()                        -> Matrix<T>;
 
  public:
-  auto operator=(const Matrix<T> &other) -> Matrix<T> &;
-  auto operator=(Matrix<T> &&other) -> Matrix<T> &;
-  auto operator+(const Matrix<T> &other) -> Matrix<T>;
-  auto operator-(const Matrix<T> &other) -> Matrix<T>;
-  auto operator+=(const Matrix<T> &other) -> Matrix<T>;
-  auto operator-=(const Matrix<T> &other) -> Matrix<T>;
-  auto operator*=(T &&value) -> Matrix<T>;
-  auto operator*=(const T &value) -> Matrix<T>;
-  auto operator()(int i, int j) -> T &;
-  auto operator*(const Matrix<T> &other) -> Matrix<T>;
-  auto operator*(T &&value) -> Matrix<T>;
-  auto operator*(const T &value) -> Matrix<T>;
-  auto operator==(const Matrix<T> &other) const -> bool;
+  auto operator=(const Matrix<T> &other)                        -> Matrix<T> &;
+  auto operator=(Matrix<T> &&other)                             -> Matrix<T> &;
+  auto operator+(const Matrix<T> &other)                        -> Matrix<T>;
+  auto operator-(const Matrix<T> &other)                        -> Matrix<T>;
+  auto operator+=(const Matrix<T> &other)                       -> Matrix<T>;
+  auto operator-=(const Matrix<T> &other)                       -> Matrix<T>;
+  auto operator*=(T &&value)                                    -> Matrix<T>;
+  auto operator*=(const T &value)                               -> Matrix<T>;
+  auto operator()(int i, int j)                                 -> T &;
+  auto operator*(const Matrix<T> &other)                        -> Matrix<T>;
+  auto operator*(T &&value)                                     -> Matrix<T>;
+  auto operator*(const T &value)                                -> Matrix<T>;
+  auto operator==(const Matrix<T> &other) const                 -> bool;
   auto friend operator*(const T &value, const Matrix<T> &other) -> Matrix<T> {
     return Matrix<T>(other.m_row, other.m_column) * value;
   }
-  auto friend operator*(T &&value, const Matrix &other) -> Matrix {
+  auto friend operator*(T &&value, const Matrix &other)         -> Matrix {
     T temp = value;
     return temp * other;
   }
 
  private:
-  auto static copyMatrix(int row, int m_column, const Matrix &left,
-                         const Matrix &right) -> void;
-  auto create() -> void;
-  auto remove() -> void;
-  auto checkData(const Matrix<T> &other) -> void;
-  auto checkForMult(const Matrix<T> &other) -> void;
-  auto checkSquare() -> void;
-  auto checkSetter(int value) -> void;
-  auto checkConstructor(int value_row, int value_column) -> void;
-  auto getMinor(int i, int j) -> Matrix<T>;
+  auto getMinor(int i, int j)                             -> Matrix<T>;
+  auto static copyMatrix(int row, int m_column,
+              const Matrix &left, const Matrix &right)    -> void;
+  auto checkConstructor(int value_row, int value_column)  -> void;
+  auto checkForMult(const Matrix<T> &other)               -> void;
+  auto checkData(const Matrix<T> &other)                  -> void;
+  auto checkSetter(int value)                             -> void;
+  auto checkSquare()                                      -> void;
+  auto create()                                           -> void;
+  auto remove()                                           -> void;
 
  private:
   int m_column = 0;
