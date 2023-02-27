@@ -722,15 +722,15 @@ TEST(operator_sum, example_1) {
   second(2, 1) = 2;
   second(2, 2) = 3;
   Matrix<bool> result(3);
-  result(0, 0) = 2 * 2;
-  result(0, 1) = 5 * 2;
-  result(0, 2) = 7 * 2;
-  result(1, 0) = 6 * 2;
-  result(1, 1) = 3 * 2;
-  result(1, 2) = 4 * 2;
-  result(2, 0) = 5 * 2;
-  result(2, 1) = 2 * 2;
-  result(2, 2) = 3 * 2;
+  result(0, 0) = true;
+  result(0, 1) = true;
+  result(0, 2) = true;
+  result(1, 0) = true;
+  result(1, 1) = true;
+  result(1, 2) = true;
+  result(2, 0) = true;
+  result(2, 1) = true;
+  result(2, 2) = true;
   Matrix<bool> summa = (first + second);
   for (int i = 0; i < second.getRow(); i++) {
     for (int j = 0; j < second.getColum(); j++) {

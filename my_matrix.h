@@ -1,8 +1,9 @@
-#ifndef MY_MATRIX_H_
-#define MY_MATRIX_H_
+#ifndef _MATRIX_MY_MATRIX_H_
+#define _MATRIX_MY_MATRIX_H_
 
 #include <cmath>
 #include <exception>
+#include <cstring>
 
 namespace victoriv {
 
@@ -10,7 +11,8 @@ inline constexpr auto EPS = 1e-6;
 
 class MyException : std::exception {
  public:
-  explicit MyException(std::string &&ex_text) noexcept : m_text(std::move(ex_text)) {}
+  explicit MyException(std::string &&ex_text) noexcept
+      : m_text(std::move(ex_text)) {}
   explicit MyException(const std::string &ex_text) noexcept : m_text(ex_text) {}
   ~MyException() noexcept = default;
   const char *what() const noexcept override { return m_text.c_str(); }
@@ -182,6 +184,7 @@ double Matrix<T>::determinant() {
 
 template <typename T>
 bool Matrix<T>::eqMatrix(const Matrix<T> &other) const {
+  if (m_row != other.m_row || m_column != other.m_column) return false;
   for (int i = 0; i < m_row; ++i) {
     for (int j = 0; j < m_column; ++j) {
       if (fabs(m_matrix[i][j] - other.m_matrix[i][j]) > EPS) return false;
@@ -408,4 +411,4 @@ void Matrix<T>::checkConstructor(int value_row, int value_column) {
 
 }  // namespace victoriv
 
-#endif  // MY_MATRIX_H_
+#endif  // _MATRIX_MY_MATRIX_H_
